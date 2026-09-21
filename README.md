@@ -96,3 +96,35 @@ npm run build:frontend
 ```
 
 Thiết lập `VITE_API_URL` thành URL backend production trước khi build.
+
+## Deploy Hostinger trên cùng domain
+
+Ứng dụng production chạy dưới một Node.js Web App duy nhất: Express phục vụ frontend đã build và API tại `/api`.
+
+Thiết lập Hostinger:
+
+- Framework: `Express.js` (hoặc `Other` nếu không có Express.js)
+- Root directory: `.` (thư mục gốc repository, không phải `frontend`)
+- Node.js: `22.x`
+- Build command: `npm run build`
+- Start command: `npm start`
+
+Các biến môi trường bắt buộc:
+
+```env
+NODE_ENV=production
+HOST=0.0.0.0
+PORT=3000
+FRONTEND_URL=https://hoalua.com,https://www.hoalua.com
+JWT_SECRET=replace-with-a-random-secret-at-least-32-characters
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=your_hostinger_database_user
+DB_PASSWORD=your_hostinger_database_password
+DB_NAME=your_hostinger_database_name
+DB_CONNECTION_LIMIT=10
+```
+
+Trong lần deploy đầu tiên có thể thêm `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_NAME`, `ADMIN_ROLE` để bootstrap admin. Sau khi đăng nhập thành công, nên xóa `ADMIN_PASSWORD` khỏi biến môi trường Hostinger.
+
+Database Hostinger thường có prefix trong tên. Chọn database trong phpMyAdmin rồi import `backend/database/hostinger/production.sql`; file này không chứa `CREATE DATABASE` hoặc `USE hoa_lua`.

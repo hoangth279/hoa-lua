@@ -10,7 +10,11 @@
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "dev:frontend": "npm run dev --workspace=frontend",
     "dev:backend": "npm run dev --workspace=backend",
+    "build": "npm run build:frontend",
     "build:frontend": "npm run build --workspace=frontend",
+    "db:bundle:hostinger": "node backend/scripts/build-hostinger-sql.js",
+    "prestart": "npm run admin:ensure --workspace=backend",
+    "start": "npm run start:backend",
     "start:backend": "npm run start --workspace=backend"
   },
   "devDependencies": {
