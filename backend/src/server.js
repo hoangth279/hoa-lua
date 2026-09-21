@@ -8,11 +8,20 @@ const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || '0.0.0.0';
 
 async function start() {
-    const admin = await ensureAdminFromEnv();
-    if (!admin.skipped) console.log(`Admin bootstrap sẵn sàng: ${admin.email} (${admin.role}).`);
-    app.listen(PORT, HOST, () => {
+    const server = app.listen(PORT, HOST, () => {
         console.log(`Hoa Lua web app running on ${HOST}:${PORT}`);
     });
+
+    try {
+        const admin = await ensureAdminFromEnv();
+        if (!admin.skipped) console.log(`Admin bootstrap sẵn sàng: ${admin.email} (${admin.role}).`);
+    } catch (error) {
+        // Keep the website online when the first-deploy database/bootstrap setup is incomplete.
+        // The health endpoint will still report the database connection state.
+        console.error('Không thể bootstrap tài khoản admin:', error.message);
+    }
+
+    return server;
 }
 
 start().catch((error) => {

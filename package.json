@@ -12,9 +12,13 @@
     "dev:backend": "npm run dev --workspace=backend",
     "build": "npm run build:frontend",
     "build:frontend": "npm run build --workspace=frontend",
+    "postinstall": "npm run build",
     "db:bundle:hostinger": "node backend/scripts/build-hostinger-sql.js",
     "start": "npm run start:backend",
     "start:backend": "npm run start --workspace=backend"
+  },
+  "engines": {
+    "node": "22.x"
   },
   "devDependencies": {
     "concurrently": "^10.0.5"
