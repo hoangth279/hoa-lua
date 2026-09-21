@@ -1,0 +1,4 @@
+const db = require('../config/database');
+const { asyncHandler, clean, isEmail } = require('../utils/http');
+const createContact = asyncHandler(async (req, res) => { const fullName=clean(req.body.fullName,120); const email=clean(req.body.email,190).toLowerCase(); const subject=clean(req.body.subject,180); const message=clean(req.body.message,3000); if(!fullName||!isEmail(email)||!subject||message.length<10) return res.status(422).json({success:false,message:'Vui lòng kiểm tra lại các thông tin bắt buộc.'}); const [result]=await db.execute('INSERT INTO contact_messages (full_name,email,subject,message,status) VALUES (?,?,?,?,?)',[fullName,email,subject,message,'new']); res.status(201).json({success:true,message:'Cảm ơn bạn đã viết cho Họa Lụa. Chúng tôi sẽ phản hồi sớm nhất!',data:{id:result.insertId}}); });
+module.exports = { createContact };
