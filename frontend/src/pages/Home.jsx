@@ -7,7 +7,7 @@ import { campaigns, posts, workshops, formatDate, formatPrice } from '../data/co
 function Home() {
   return (
     <div className="home-page">
-      <Seo description="Họa Lụa là chiến dịch nghệ thuật phi lợi nhuận kết nối lụa, thủ công và văn hóa Việt với đời sống đương đại." />
+      <Seo description="Họa Lụa là chiến dịch nghệ thuật phi lợi nhuận kết nối lụa, thủ công và văn hóa Việt với đời sống đương đại." image={heroArtwork} />
       <section className="hero" aria-labelledby="hero-title">
         <img className="hero__image" src={heroArtwork} alt="Dải lụa đỏ, khung thêu và dụng cụ nhuộm màu tự nhiên" />
         <div className="hero__veil" />

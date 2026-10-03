@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { ContactInfoProvider, useContactInfo } from '../hooks/useContactInfo';
+import { SITE_URL } from '../lib/seo';
 
 const links = [
   ['/', 'Trang chủ'],
@@ -29,8 +31,24 @@ function MainLayoutContent() {
       document.body.classList.remove('menu-open');
     };
   }, [open]);
+
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Họa Lụa',
+    url: SITE_URL,
+    logo: `${SITE_URL}/logo.png`,
+    email: contactInfo.email,
+    telephone: contactInfo.phoneDisplay,
+    address: { '@type': 'PostalAddress', streetAddress: contactInfo.address },
+    sameAs: [contactInfo.facebook, contactInfo.tiktok, contactInfo.instagram].filter(Boolean),
+  };
+
   return (
     <>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
+      </Helmet>
       <header className="site-header">
         <div className="container header__inner">
           <Link to="/" className="brand" aria-label="Họa Lụa - Trang chủ" onClick={() => setOpen(false)}>

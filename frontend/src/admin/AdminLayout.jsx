@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from './adminAuthContext';
-import logo from '../assets/logo.jpg';
+import Seo from '../components/Seo';
+import logo from '../assets/logo.png';
 
 const navigation = [
   ['/admin', 'Tổng quan', '⌂'],
@@ -18,6 +19,7 @@ function AdminLayout() {
   const [open, setOpen] = useState(false); const { user, logout } = useAdminAuth(); const navigate = useNavigate();
   const signOut = async () => { await logout(); navigate('/admin/dang-nhap', { replace: true }); };
   return <div className="admin-shell">
+    <Seo title="Quản trị" description="Trang quản trị nội dung Họa Lụa." noIndex/>
     <aside className={open ? 'admin-sidebar is-open' : 'admin-sidebar'}>
       <div className="admin-brand"><img src={logo} alt="" /><div><strong>Họa Lụa</strong><span>Quản trị nội dung</span></div></div>
       <nav aria-label="Điều hướng quản trị">{navigation.map(([to,label,icon])=><NavLink key={to} to={to} end={to==='/admin'} onClick={()=>setOpen(false)}><span aria-hidden="true">{icon}</span>{label}</NavLink>)}</nav>
