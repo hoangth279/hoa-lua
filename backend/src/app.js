@@ -10,6 +10,12 @@ const app = express();
 const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173').split(',').map((item) => item.trim());
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
+if (process.env.NODE_ENV === 'production') {
+    app.use((req, res, next) => {
+        if (req.secure || req.headers['x-forwarded-proto'] === 'https') return next();
+        return res.redirect(301, `https://${req.hostname}${req.originalUrl}`);
+    });
+}
 app.use(cors({ credentials: true, origin(origin, callback) { if (!origin || allowedOrigins.includes(origin)) return callback(null, true); const error = new Error('Origin không được phép.'); error.status = 403; return callback(error); } }));
 app.use(express.json({ limit: '100kb' }));
 app.use(express.urlencoded({ extended: true }));
