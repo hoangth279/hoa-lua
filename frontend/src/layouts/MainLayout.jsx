@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import logo from '../assets/logo.jpg';
-import { contactInfo } from '../data/contact';
+import logo from '../assets/logo.png';
+import { ContactInfoProvider, useContactInfo } from '../hooks/useContactInfo';
 
 const links = [
   ['/', 'Trang chủ'],
@@ -13,7 +13,12 @@ const links = [
 ];
 
 function MainLayout() {
+  return <ContactInfoProvider><MainLayoutContent /></ContactInfoProvider>;
+}
+
+function MainLayoutContent() {
   const [open, setOpen] = useState(false);
+  const { contactInfo } = useContactInfo();
 
   useEffect(() => {
     const closeOnEscape = (event) => event.key === 'Escape' && setOpen(false);
@@ -42,7 +47,7 @@ function MainLayout() {
         </div>
       </header>
       <main><Outlet /></main>
-      <footer className="site-footer"><div className="container footer__grid"><div><img src={logo} alt="" /><p>Họa Lụa — nơi nghệ thuật, thủ công và văn hóa Việt gặp gỡ đời sống đương đại.</p></div><div><h2>Khám phá</h2>{links.slice(1).map(([to,label])=><Link key={to} to={to}>{label}</Link>)}</div><div><h2>Kết nối</h2><a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a><a href={`tel:${contactInfo.phoneHref}`}>{contactInfo.phoneDisplay}</a><p className="footer__address">{contactInfo.address}</p><div className="footer__social"><a href={contactInfo.facebook} target="_blank" rel="noreferrer">Facebook ↗</a><a href={contactInfo.tiktok} target="_blank" rel="noreferrer">TikTok ↗</a></div></div></div><div className="container footer__bottom"><span>© 2026 Họa Lụa. Một dự án nghệ thuật phi lợi nhuận.</span><Link to="/lien-he">Liên hệ</Link></div></footer>
+      <footer className="site-footer"><div className="container footer__grid"><div><img src={logo} alt="" /><p>Họa Lụa — nơi nghệ thuật, thủ công và văn hóa Việt gặp gỡ đời sống đương đại.</p></div><div><h2>Khám phá</h2>{links.slice(1).map(([to,label])=><Link key={to} to={to}>{label}</Link>)}</div><div><h2>Kết nối</h2><a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a><a href={`tel:${contactInfo.phoneHref}`}>{contactInfo.phoneDisplay}</a><p className="footer__address">{contactInfo.address}</p><div className="footer__social"><a href={contactInfo.facebook} target="_blank" rel="noreferrer">Facebook ↗</a><a href={contactInfo.tiktok} target="_blank" rel="noreferrer">TikTok ↗</a><a href={contactInfo.instagram} target="_blank" rel="noreferrer">Instagram ↗</a></div></div></div><div className="container footer__bottom"><span>© 2026 Họa Lụa. Một dự án nghệ thuật phi lợi nhuận.</span><Link to="/lien-he">Liên hệ</Link></div></footer>
     </>
   );
 }

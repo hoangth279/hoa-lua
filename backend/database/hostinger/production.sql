@@ -165,6 +165,13 @@ ON DUPLICATE KEY UPDATE
 DELETE FROM site_settings
 WHERE setting_key IN ('instagram_url', 'youtube_url');
 
+-- Source: migrations/004_add_instagram_contact.sql
+INSERT INTO site_settings (setting_key, setting_value, setting_group) VALUES
+('instagram_url', 'https://www.instagram.com/hoalua.hoaloisong', 'social')
+ON DUPLICATE KEY UPDATE
+  setting_value = VALUES(setting_value),
+  setting_group = VALUES(setting_group);
+
 -- Source: seeds/001_demo_content.sql
 INSERT INTO campaigns (slug,title,excerpt,content,status,start_date,end_date,display_order,is_published) VALUES
 ('mot-met-lua-mot-cau-chuyen','Một mét lụa, một câu chuyện','Mời cộng đồng góp một mảnh ký ức để cùng tạo nên tác phẩm lụa dài.','Tác phẩm cộng đồng được trưng bày lưu động và tiếp tục lớn lên sau mỗi điểm dừng.','Đang diễn ra','2026-09-01','2026-12-31',1,TRUE),

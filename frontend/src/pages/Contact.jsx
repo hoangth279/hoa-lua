@@ -1,8 +1,9 @@
 import Seo from '../components/Seo';
 import ContactForm from '../components/ContactForm';
-import { contactInfo } from '../data/contact';
+import { useContactInfo } from '../hooks/useContactInfo';
 
 function Contact() {
+  const { contactInfo } = useContactInfo();
   return <div className="inner-page">
     <Seo title="Liên hệ" description="Liên hệ, hợp tác và đồng hành cùng chiến dịch nghệ thuật Họa Lụa." />
     <section className="page-hero page-hero--compact"><div className="container"><p className="eyebrow">Liên hệ & đồng hành</p><h1>Cùng nhau dệt nên<br /><em>một điều đẹp đẽ.</em></h1></div></section>
@@ -12,7 +13,7 @@ function Contact() {
           <dt>Email</dt><dd><a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a></dd>
           <dt>Điện thoại</dt><dd><a href={`tel:${contactInfo.phoneHref}`}>{contactInfo.phoneDisplay}</a></dd>
           <dt>Địa chỉ</dt><dd>{contactInfo.address}</dd>
-          <dt>Mạng xã hội</dt><dd className="contact-social"><a href={contactInfo.facebook} target="_blank" rel="noreferrer">Facebook ↗</a><a href={contactInfo.tiktok} target="_blank" rel="noreferrer">TikTok ↗</a></dd>
+          <dt>Mạng xã hội</dt><dd className="contact-social"><a href={contactInfo.facebook} target="_blank" rel="noreferrer">Facebook ↗</a><a href={contactInfo.tiktok} target="_blank" rel="noreferrer">TikTok ↗</a><a href={contactInfo.instagram} target="_blank" rel="noreferrer">Instagram ↗</a></dd>
         </dl>
       </div>
       <ContactForm />

@@ -6,4 +6,10 @@ const listWorkshops = asyncHandler(async (_req, res) => { const [rows] = await d
 const listPosts = asyncHandler(async (_req, res) => { const [rows] = await db.query('SELECT id, slug, title, excerpt, content, category, cover_image AS coverImage, published_at AS publishedAt FROM posts WHERE is_published = 1 ORDER BY published_at DESC'); res.json({ success: true, data: rows }); });
 const getPost = asyncHandler(async (req, res) => { const [rows] = await db.execute('SELECT id, slug, title, excerpt, content, category, cover_image AS coverImage, published_at AS publishedAt FROM posts WHERE slug = ? AND is_published = 1 LIMIT 1', [req.params.slug]); if (!rows[0]) return res.status(404).json({ success: false, message: 'Không tìm thấy bài viết.' }); res.json({ success: true, data: rows[0] }); });
 const listGallery = asyncHandler(async (_req, res) => { const [rows] = await db.query('SELECT id, title, description, media_type AS mediaType, media_url AS mediaUrl, thumbnail_url AS thumbnailUrl, display_order AS displayOrder FROM gallery_items WHERE is_published = 1 ORDER BY display_order, created_at DESC'); res.json({ success: true, data: rows }); });
-module.exports = { listCampaigns, listWorkshops, listPosts, getPost, listGallery };
+const getPublicSettings = asyncHandler(async (_req, res) => {
+  const settingKeys = ['contact_email', 'contact_phone', 'contact_address', 'facebook_url', 'tiktok_url', 'instagram_url'];
+  const [rows] = await db.query('SELECT setting_key AS settingKey, setting_value AS settingValue FROM site_settings WHERE setting_key IN (?)', [settingKeys]);
+  const settings = Object.fromEntries(rows.map(({ settingKey, settingValue }) => [settingKey, settingValue || '']));
+  res.json({ success: true, data: settings });
+});
+module.exports = { listCampaigns, listWorkshops, listPosts, getPost, listGallery, getPublicSettings };

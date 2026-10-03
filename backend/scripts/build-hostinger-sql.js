@@ -6,6 +6,7 @@ const sources = [
   'migrations/001_initial_schema.sql',
   'migrations/002_admin_management.sql',
   'migrations/003_update_contact_channels.sql',
+  'migrations/004_add_instagram_contact.sql',
   'seeds/001_demo_content.sql',
 ];
 
