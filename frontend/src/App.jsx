@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import MainLayout from './layouts/MainLayout';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
@@ -22,6 +23,7 @@ import './admin/admin.css';
 function App() {
     return (
         <BrowserRouter>
+          <ScrollToTop />
           <AdminAuthProvider>
             <Routes>
                 <Route element={<MainLayout />}>
