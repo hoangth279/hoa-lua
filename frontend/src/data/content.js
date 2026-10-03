@@ -1,5 +1,5 @@
 import heroArtwork from '../assets/hoa-lua-hero.png';
-import logo from '../assets/logo.jpg';
+import logo from '../assets/logo.png';
 
 export const workshops = [
   { id: 1, slug: 've-lua-cung-mau-tu-nhien', title: 'Vẽ lụa cùng màu tự nhiên', excerpt: 'Khám phá độ thấm, độ loang và tự tay hoàn thiện một bức lụa nhỏ bằng bảng màu từ cây cỏ.', date: '2026-10-18', time: '09:00 – 12:00', location: 'Nhà Văn hóa Nghệ thuật, TP.HCM', capacity: 16, price: 0, image: heroArtwork, tag: 'Dành cho người mới' },
