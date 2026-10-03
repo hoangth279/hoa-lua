@@ -6,8 +6,7 @@ import NotFound from './pages/NotFound';
 import About from './pages/About';
 import Activities from './pages/Activities';
 import Workshops from './pages/Workshops';
-import News from './pages/News';
-import PostDetail from './pages/PostDetail';
+import AboutUs from './pages/AboutUs';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import { AdminAuthProvider, AdminGuard } from './admin/AdminAuth';
@@ -30,8 +29,7 @@ function App() {
                     <Route path="/gioi-thieu" element={<About />} />
                     <Route path="/hoat-dong" element={<Activities />} />
                     <Route path="/workshop" element={<Workshops />} />
-                    <Route path="/tin-tuc" element={<News />} />
-                    <Route path="/tin-tuc/:slug" element={<PostDetail />} />
+                    <Route path="/ve-chung-toi" element={<AboutUs />} />
                     <Route path="/thu-vien" element={<Gallery />} />
                     <Route path="/lien-he" element={<Contact />} />
                     <Route path="*" element={<NotFound />} />

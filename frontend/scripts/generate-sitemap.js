@@ -5,16 +5,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_URL = (process.env.VITE_SITE_URL || 'https://hoalua.online').replace(/\/$/, '');
 
-const staticRoutes = ['/', '/gioi-thieu', '/hoat-dong', '/workshop', '/tin-tuc', '/thu-vien', '/lien-he'];
-
-// Giữ đồng bộ với slug bài viết trong src/data/content.js
-const postSlugs = [
-  'lua-trong-doi-song-duong-dai',
-  'gap-go-nghe-nhan-mau-tu-nhien',
-  'nhat-ky-workshop-dau-tien',
-];
-
-const urls = [...staticRoutes, ...postSlugs.map((slug) => `/tin-tuc/${slug}`)];
+const urls = ['/', '/gioi-thieu', '/hoat-dong', '/workshop', '/ve-chung-toi', '/thu-vien', '/lien-he'];
 
 const body = urls
   .map((url) => `  <url>\n    <loc>${SITE_URL}${url}</loc>\n  </url>`)

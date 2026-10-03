@@ -10,7 +10,7 @@ const links = [
   ['/gioi-thieu', 'Câu chuyện'],
   ['/hoat-dong', 'Hoạt động'],
   ['/workshop', 'Workshop'],
-  ['/tin-tuc', 'Tin tức'],
+  ['/ve-chung-toi', 'Về chúng tôi'],
   ['/thu-vien', 'Thư viện'],
 ];
 
@@ -61,7 +61,7 @@ function MainLayoutContent() {
           <nav id="main-menu" className={open ? 'nav nav--open' : 'nav'} aria-label="Điều hướng chính">
             {links.map(([to, label]) => <NavLink key={to} to={to} end={to === '/'} onClick={() => setOpen(false)}>{label}</NavLink>)}
           </nav>
-          <Link className="button button--small header__cta" to="/lien-he">Tham gia cùng chúng tôi</Link>
+          <Link className="button button--small header__cta" to="/workshop#booking">Tham gia cùng chúng tôi</Link>
         </div>
       </header>
       <main><Outlet /></main>

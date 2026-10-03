@@ -8,6 +8,7 @@ const sources = [
   'migrations/003_update_contact_channels.sql',
   'migrations/004_add_instagram_contact.sql',
   'seeds/001_demo_content.sql',
+  'migrations/005_update_workshops_content.sql',
 ];
 
 const sql = sources.map((relativePath) => {
