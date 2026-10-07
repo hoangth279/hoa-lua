@@ -32,13 +32,13 @@ const storyPillars = [
 
 function About() {
   return <div className="inner-page story-page">
-    <Seo title="Câu chuyện" description="Câu chuyện Họa Lụa: lưu giữ di sản, tái sinh chất liệu và kết nối các thế hệ." />
+    <Seo title="Câu chuyện Họa Lụa" description="Tìm hiểu câu chuyện Họa Lụa: lưu giữ di sản lụa Việt, tái sinh chất liệu thủ công và kết nối các thế hệ qua nghệ thuật." />
     <section className="story-intro"><div className="container story-intro__grid">
       <figure className="story-intro__image"><img src={hero} alt="Dải lụa đỏ và dụng cụ thủ công truyền thống" /></figure>
       <div className="story-intro__content"><p className="section-index">Từ chất liệu đến kết nối</p><h1>Chúng tôi chọn lụa<br /><em>vì lụa biết lưu giữ.</em></h1><p>Lụa lưu dấu từng nét cọ, từng lớp màu và cả nhịp thở của người tạo tác. Họa Lụa mở ra những không gian để nghệ nhân, nghệ sĩ và công chúng cùng gặp gỡ, chia sẻ và thực hành.</p><p>Chúng tôi không cố đóng khung truyền thống. Chúng tôi tạo điều kiện để truyền thống tiếp tục chuyển động — tử tế, bền vững và gần gũi với hôm nay.</p></div>
     </div></section>
     <section className="story-pillars" aria-labelledby="story-pillars-title"><div className="container">
-      <div className="story-pillars__heading"><p className="section-index">Những điều lụa lưu giữ</p><h2 id="story-pillars-title">Từ những mảnh lụa nhỏ,<br /><em>mở ra những kết nối dài lâu.</em></h2></div>
+      <div className="story-pillars__heading"><p className="section-index">Những điều lụa lưu giữ</p><h2 id="story-pillars-title" className="story-pillars__split-title"><span>Từ những mảnh lụa nhỏ,</span><em>mở ra những kết nối dài lâu.</em></h2></div>
       <div className="story-pillars__list">{storyPillars.map((pillar) => <article className="story-pillar" key={pillar.number}><span className="story-pillar__number">{pillar.number}</span><div><h3>{pillar.title}</h3>{pillar.points.map((point) => <p key={point.label}><strong>{point.label}:</strong> {point.text}</p>)}</div></article>)}</div>
     </div></section>
   </div>;

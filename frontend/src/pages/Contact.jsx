@@ -5,7 +5,7 @@ import { useContactInfo } from '../hooks/useContactInfo';
 function Contact() {
   const { contactInfo } = useContactInfo();
   return <div className="inner-page">
-    <Seo title="Liên hệ" description="Liên hệ, hợp tác và đồng hành cùng chiến dịch nghệ thuật Họa Lụa." />
+    <Seo title="Liên hệ & hợp tác" description="Liên hệ Họa Lụa để tham gia workshop, hợp tác chuyên môn, tài trợ địa điểm hoặc đồng hành cùng dự án nghệ thuật cộng đồng." />
     <section className="page-hero page-hero--compact"><div className="container"><p className="eyebrow">Liên hệ & đồng hành</p><h1>Cùng nhau dệt nên<br /><em>một điều đẹp đẽ.</em></h1></div></section>
     <section className="contact-section"><div className="container contact-grid">
       <div><p className="section-index">Kết nối với Họa Lụa</p><h2>Một lời chào cũng có thể mở đầu cho một hành trình.</h2><p>Nếu bạn muốn tham gia, hợp tác chuyên môn, tài trợ địa điểm hoặc chia sẻ một câu chuyện về lụa — hãy viết cho chúng tôi.</p>

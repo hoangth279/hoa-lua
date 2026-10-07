@@ -10,13 +10,13 @@ function Home() {
   const featuredWorkshops = workshops.slice(0, 3);
   return (
     <div className="home-page">
-      <Seo description="Họa Lụa là chiến dịch nghệ thuật phi lợi nhuận kết nối lụa, thủ công và văn hóa Việt với đời sống đương đại." image={heroArtwork} />
+      <Seo description="Họa Lụa là dự án nghệ thuật phi lợi nhuận kết nối lụa, thủ công và văn hóa Việt với đời sống đương đại qua hoạt động cộng đồng và workshop sáng tạo." image={heroArtwork} />
       <section className="hero" aria-labelledby="hero-title">
         <img className="hero__image" src={heroArtwork} alt="Dải lụa đỏ, khung thêu và dụng cụ nhuộm màu tự nhiên" />
         <div className="hero__veil" />
         <div className="container hero__content">
           <p className="eyebrow">Chiến dịch nghệ thuật phi lợi nhuận</p>
-          <h1 id="hero-title">Từ một sợi lụa,<br /><em>dệt nên ngàn kết nối.</em></h1>
+          <h1 id="hero-title" className="hero__split-title"><span>Họa Lụa: từ một sợi lụa,</span><em>dệt nên ngàn kết nối.</em></h1>
           <p className="hero__lead">Họa Lụa đưa vẻ đẹp của lụa, thủ công và văn hóa Việt vào đời sống đương đại — bằng những trải nghiệm ai cũng có thể chạm, cảm và cùng tạo nên.</p>
           <div className="hero__actions">
             <a className="button button--primary" href="#workshops">Khám phá workshop <span aria-hidden="true">↗</span></a>
@@ -29,7 +29,7 @@ function Home() {
         <div className="container manifesto__grid">
           <p className="section-index">01 / Về Họa Lụa</p>
           <div>
-            <p className="manifesto__statement">Không chỉ ngắm nhìn nghệ thuật.<br /><em>Hãy để nghệ thuật chạm vào bạn.</em></p>
+            <p className="manifesto__statement manifesto__split-title"><span>Không chỉ ngắm nhìn nghệ thuật.</span><em>Hãy để nghệ thuật chạm vào bạn.</em></p>
             <p className="manifesto__copy">Chúng tôi tin rằng di sản chỉ thực sự sống khi được kể lại bằng ngôn ngữ của hôm nay. Mỗi hoạt động của Họa Lụa là một cuộc gặp giữa nghệ nhân, nghệ sĩ và cộng đồng.</p>
             <Link className="text-link" to="/gioi-thieu">Câu chuyện của chúng tôi <span aria-hidden="true">→</span></Link>
           </div>
@@ -58,8 +58,8 @@ function Home() {
           </div>
         </div>
       </section>
-      <section className="quote-band"><div className="container"><span>“</span><blockquote>Nghệ thuật không ở đâu xa.<br />Nghệ thuật bắt đầu từ một lần ta dừng lại và chạm thật khẽ.</blockquote><p>— Tuyên ngôn Họa Lụa</p></div></section>
-      <section className="join"><div className="container join__inner"><p className="section-index">Cùng Họa Lụa tạo nên điều đẹp đẽ</p><h2>Mỗi bàn tay góp vào,<br /><em>một câu chuyện được nối dài.</em></h2><p>Bạn có thể tham dự workshop, trở thành tình nguyện viên, đồng hành chuyên môn hoặc đơn giản là kể câu chuyện Họa Lụa cho một người bạn.</p><Link className="button button--light" to="/workshop#booking">Tham gia cùng chúng tôi →</Link></div></section>
+      <section className="quote-band"><div className="container"><span>“</span><blockquote><span className="quote-band__line">Nghệ thuật không ở đâu xa.</span><span className="quote-band__line">Nghệ thuật bắt đầu từ một lần ta dừng lại và chạm thật khẽ.</span></blockquote><p>— Tuyên ngôn Họa Lụa</p></div></section>
+      <section className="join"><div className="container join__inner"><p className="section-index">Cùng Họa Lụa tạo nên điều đẹp đẽ</p><h2 className="join__split-title"><span>Mỗi bàn tay góp vào,</span><em>một câu chuyện được nối dài.</em></h2><p>Bạn có thể tham dự workshop, trở thành tình nguyện viên, đồng hành chuyên môn hoặc đơn giản là kể câu chuyện Họa Lụa cho một người bạn.</p><Link className="button button--light" to="/workshop#booking">Tham gia cùng chúng tôi →</Link></div></section>
     </div>
   );
 }

@@ -8,7 +8,7 @@ const storyPoints = [
 
 function AboutUs() {
   return <div className="inner-page story-page">
-    <Seo title="Về chúng tôi" description="Họa Lụa — dự án nghệ thuật của sinh viên Trường Đại học Hà Nội, lấy VỤN Art làm hình mẫu truyền cảm hứng, kết nối di sản lụa Việt với thế hệ trẻ." />
+    <Seo title="Về Họa Lụa" description="Họa Lụa là dự án nghệ thuật của sinh viên Trường Đại học Hà Nội, lấy VỤN Art làm hình mẫu truyền cảm hứng, kết nối di sản lụa Việt với thế hệ trẻ." />
     <section className="page-hero page-hero--compact"><div className="container"><p className="eyebrow">Về chúng tôi</p><h1>Nơi di sản<br /><em>tiếp tục chuyển động.</em></h1><p>Họa Lụa là dự án nghệ thuật của sinh viên Trường Đại học Hà Nội, ra đời với sứ mệnh kết nối nghệ thuật lụa truyền thống Việt Nam với hơi thở đương đại của thế hệ trẻ. Lấy mô hình VỤN Art làm hình mẫu truyền cảm hứng xuyên suốt, Họa Lụa không chỉ tôn vinh giá trị di sản mà còn cùng cộng đồng lan tỏa thông điệp: "Nâng niu tài nghệ trên từng mảnh lụa."</p></div></section>
     <section className="story-pillars" aria-labelledby="about-us-title"><div className="container">
       <div className="story-pillars__heading"><p className="section-index">Câu chuyện của Họa Lụa</p><h2 id="about-us-title">Từ những mảnh lụa nhỏ,<br /><em>dệt nên một hành trình.</em></h2></div>

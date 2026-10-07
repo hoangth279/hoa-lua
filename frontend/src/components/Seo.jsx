@@ -10,13 +10,34 @@ function Seo({ title, description = DEFAULT_DESCRIPTION, image, type = 'website'
   const canonicalUrl = `${SITE_URL}${pathname}`;
   const absoluteImage = image?.startsWith('http') ? image : image ? `${SITE_URL}${image}` : DEFAULT_IMAGE;
   const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} | Nghệ thuật được sẻ chia`;
+  const pageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${canonicalUrl}#webpage`,
+    url: canonicalUrl,
+    name: fullTitle,
+    description,
+    inLanguage: 'vi-VN',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    about: { '@id': `${SITE_URL}/#organization` },
+  };
+  const websiteSchema = pathname === '/' ? {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    url: `${SITE_URL}/`,
+    name: SITE_NAME,
+    alternateName: 'Hoa Lua',
+    inLanguage: 'vi-VN',
+    publisher: { '@id': `${SITE_URL}/#organization` },
+  } : null;
 
   return (
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={canonicalUrl} />
-      {noIndex && <meta name="robots" content="noindex, nofollow" />}
+      <meta name="robots" content={noIndex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
 
       <meta property="og:type" content={type} />
       <meta property="og:site_name" content={SITE_NAME} />
@@ -29,6 +50,9 @@ function Seo({ title, description = DEFAULT_DESCRIPTION, image, type = 'website'
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={absoluteImage} />
+
+      <script type="application/ld+json">{JSON.stringify(pageSchema)}</script>
+      {websiteSchema && <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>}
     </Helmet>
   );
 }

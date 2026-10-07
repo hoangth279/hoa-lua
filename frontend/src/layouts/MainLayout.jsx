@@ -35,12 +35,23 @@ function MainLayoutContent() {
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': `${SITE_URL}/#organization`,
     name: 'Họa Lụa',
+    alternateName: 'Hoa Lua',
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
+    image: `${SITE_URL}/og.png`,
+    description: 'Họa Lụa là dự án nghệ thuật phi lợi nhuận kết nối lụa, thủ công và văn hóa Việt với đời sống đương đại.',
     email: contactInfo.email,
     telephone: contactInfo.phoneDisplay,
     address: { '@type': 'PostalAddress', streetAddress: contactInfo.address },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      email: contactInfo.email,
+      telephone: contactInfo.phoneDisplay,
+      contactType: 'customer support',
+      availableLanguage: 'vi',
+    },
     sameAs: [contactInfo.facebook, contactInfo.tiktok, contactInfo.instagram].filter(Boolean),
   };
 

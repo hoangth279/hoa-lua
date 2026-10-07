@@ -23,8 +23,8 @@ function Workshops() {
 
   return (
     <div className="inner-page">
-      <Seo title="Workshop" description="Lịch workshop lụa, màu tự nhiên và trải nghiệm nghệ thuật của Họa Lụa." />
-      <section className="page-hero page-hero--compact"><div className="container"><p className="eyebrow">Workshop & trải nghiệm</p><h1>Học bằng đôi tay.<br /><em>Nhớ bằng trái tim.</em></h1><p>Không cần kinh nghiệm. Chỉ cần bạn mang theo sự tò mò và một chút thời gian cho chính mình.</p></div></section>
+      <Seo title="Workshop nghệ thuật" description="Lịch workshop nghệ thuật của Họa Lụa: trải nghiệm lụa, màu tự nhiên và thủ công Việt dành cho người yêu sáng tạo." />
+      <section className="page-hero page-hero--compact"><div className="container"><p className="eyebrow">Workshop & trải nghiệm</p><h1 className="page-hero__split-title"><span>Workshop nghệ thuật</span><em>cùng Họa Lụa.</em></h1><p>Không cần kinh nghiệm. Chỉ cần bạn mang theo sự tò mò và một chút thời gian cho chính mình.</p></div></section>
       <section className="section"><div className="container workshop-list">
         {loading && <p>Đang tải lịch workshop…</p>}
         {!loading && !workshops.length && <p>Hiện chưa có workshop nào được mở đăng ký.</p>}
