@@ -16,7 +16,7 @@ function Home() {
         <div className="hero__veil" />
         <div className="container hero__content">
           <p className="eyebrow">Chiến dịch nghệ thuật phi lợi nhuận</p>
-          <h1 id="hero-title" className="hero__split-title"><span>Họa Lụa: từ một sợi lụa,</span><em>dệt nên ngàn kết nối.</em></h1>
+          <h1 id="hero-title" className="hero__split-title"><span>Họa Lụa — Một nét tơ mềm,</span><em>một dòng chuyện kể</em></h1>
           <p className="hero__lead">Họa Lụa đưa vẻ đẹp của lụa, thủ công và văn hóa Việt vào đời sống đương đại — bằng những trải nghiệm ai cũng có thể chạm, cảm và cùng tạo nên.</p>
           <div className="hero__actions">
             <a className="button button--primary" href="#workshops">Khám phá workshop <span aria-hidden="true">↗</span></a>
@@ -37,7 +37,7 @@ function Home() {
       </section>
       <section className="campaigns section" id="activities">
         <div className="container">
-          <SectionHeading index="02" eyebrow="Hoạt động" title={<>Nơi di sản được<br /><em>tiếp tục kể.</em></>} action={<Link className="text-link" to="/hoat-dong">Xem tất cả hoạt động →</Link>} />
+          <SectionHeading index="02" eyebrow="Hoạt động" title={<>Giữ hồn di sản trong<br /><em>từng nhịp thở thời gian</em></>} action={<Link className="text-link" to="/hoat-dong">Xem tất cả hoạt động →</Link>} />
           <div className="campaign-list">
             {campaigns.map((item) => <article className="campaign-row" key={item.number}>
               <span className="campaign-row__number">{item.number}</span>
@@ -49,7 +49,7 @@ function Home() {
       </section>
       <section className="workshops section" id="workshops">
         <div className="container">
-          <SectionHeading index="03" eyebrow="Trải nghiệm" title={<>Chạm tay vào lụa.<br /><em>Chạm vào câu chuyện.</em></>} action={<Link className="text-link" to="/workshop">Lịch workshop →</Link>} />
+          <SectionHeading index="03" eyebrow="Trải nghiệm" title={<>Chạm vào nét lụa mềm,<br /><em> cảm một miền kí ức</em></>} action={<Link className="text-link" to="/workshop">Lịch workshop →</Link>} />
           <div className={`workshop-grid${featuredWorkshops.length === 2 ? ' workshop-grid--pair' : ''}`}>
             {featuredWorkshops.map((item, index) => <article className={`workshop-card ${featuredWorkshops.length > 2 && index === 0 ? 'workshop-card--featured' : ''}`} key={item.id}>
               <div className="workshop-card__image"><img src={item.coverImage || heroArtwork} alt="" /><span>{item.category}</span></div>
@@ -58,7 +58,7 @@ function Home() {
           </div>
         </div>
       </section>
-      <section className="quote-band"><div className="container"><span>“</span><blockquote><span className="quote-band__line">Nghệ thuật không ở đâu xa.</span><span className="quote-band__line">Nghệ thuật bắt đầu từ một lần ta dừng lại và chạm thật khẽ.</span></blockquote><p>— Tuyên ngôn Họa Lụa</p></div></section>
+      <section className="quote-band"><div className="container"><span>“</span><blockquote><span className="quote-band__line">Nghệ thuật không ở đâu xa.</span><span className="quote-band__line">Nghệ thuật đơm hoa từ những điều bình dị.</span></blockquote><p>— Tuyên ngôn Họa Lụa</p></div></section>
       <section className="join"><div className="container join__inner"><p className="section-index">Cùng Họa Lụa tạo nên điều đẹp đẽ</p><h2 className="join__split-title"><span>Mỗi bàn tay góp vào,</span><em>một câu chuyện được nối dài.</em></h2><p>Bạn có thể tham dự workshop, trở thành tình nguyện viên, đồng hành chuyên môn hoặc đơn giản là kể câu chuyện Họa Lụa cho một người bạn.</p><Link className="button button--light" to="/workshop#booking">Tham gia cùng chúng tôi →</Link></div></section>
     </div>
   );
