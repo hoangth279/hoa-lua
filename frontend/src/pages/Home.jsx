@@ -3,11 +3,15 @@ import heroArtwork from '../assets/hoa-lua-hero.png';
 import Seo from '../components/Seo';
 import SectionHeading from '../components/SectionHeading';
 import WorkshopTitle from '../components/WorkshopTitle';
+import ContentState from '../components/ContentState';
+import { usePublicContent } from '../hooks/usePublicContent';
 import { useWorkshops } from '../hooks/useWorkshops';
-import { campaigns, formatApiDate, formatApiTimeRange, formatPrice } from '../data/content';
+import { formatApiDate, formatApiTimeRange, formatPrice } from '../data/content';
 
 function Home() {
   const { workshops } = useWorkshops();
+  const campaignContent = usePublicContent('/campaigns');
+  const campaigns = campaignContent.data || [];
   const featuredWorkshops = workshops.slice(0, 3);
   return (
     <div className="home-page">
@@ -40,9 +44,10 @@ function Home() {
         <div className="container">
           <SectionHeading index="02" eyebrow="Hoạt động" title={<>Giữ hồn di sản trong<br /><em>từng nhịp thở thời gian</em></>} action={<Link className="text-link" to="/hoat-dong">Xem tất cả hoạt động →</Link>} />
           <div className="campaign-list">
-            {campaigns.map((item) => <article className="campaign-row" key={item.number}>
-              <span className="campaign-row__number">{item.number}</span>
-              <div><h3>{item.title}</h3><p>{item.lead}</p></div>
+            <ContentState loading={campaignContent.loading} error={campaignContent.error} empty={!campaigns.length ? 'Hiện chưa có hoạt động nào được công bố.' : ''} onRetry={campaignContent.retry} />
+            {campaigns.slice(0, 3).map((item, index) => <article className="campaign-row" key={item.id}>
+              <span className="campaign-row__number">{String(index + 1).padStart(2, '0')}</span>
+              <div><h3><Link to={`/hoat-dong#${encodeURIComponent(item.slug)}`}>{item.title}</Link></h3><p>{item.excerpt}</p></div>
               <span className="campaign-row__arrow" aria-hidden="true">↗</span>
             </article>)}
           </div>

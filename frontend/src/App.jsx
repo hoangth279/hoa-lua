@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import MainLayout from './layouts/MainLayout';
 import ScrollToTop from './components/ScrollToTop';
@@ -10,6 +10,7 @@ import Workshops from './pages/Workshops';
 import AboutUs from './pages/AboutUs';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
+import AdminStory from './admin/AdminStory';
 import { AdminAuthProvider, AdminGuard } from './admin/AdminAuth';
 import AdminLayout from './admin/AdminLayout';
 import AdminLogin from './admin/AdminLogin';
@@ -34,6 +35,8 @@ function App() {
                     <Route path="/ve-chung-toi" element={<AboutUs />} />
                     <Route path="/thu-vien" element={<Gallery />} />
                     <Route path="/lien-he" element={<Contact />} />
+                    <Route path="/bai-viet" element={<Navigate to="/gioi-thieu" replace />} />
+                    <Route path="/bai-viet/:slug" element={<Navigate to="/gioi-thieu" replace />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
                 <Route path="/admin/dang-nhap" element={<AdminLogin />} />
@@ -42,10 +45,11 @@ function App() {
                     <Route index element={<AdminDashboard />} />
                     <Route path="bookings" element={<AdminBookings />} />
                     <Route path="lien-he" element={<AdminContacts />} />
-                    <Route path="workshops" element={<AdminResource resource="workshops" />} />
-                    <Route path="campaigns" element={<AdminResource resource="campaigns" />} />
-                    <Route path="bai-viet" element={<AdminResource resource="posts" />} />
-                    <Route path="gallery" element={<AdminResource resource="gallery" />} />
+                    <Route path="workshops" element={<AdminResource key="workshops" resource="workshops" />} />
+                    <Route path="campaigns" element={<AdminResource key="campaigns" resource="campaigns" />} />
+                    <Route path="cau-chuyen" element={<AdminStory />} />
+                    <Route path="bai-viet" element={<Navigate to="/admin/cau-chuyen" replace />} />
+                    <Route path="gallery" element={<AdminResource key="gallery" resource="gallery" />} />
                     <Route path="cau-hinh" element={<AdminSettings />} />
                   </Route>
                 </Route>

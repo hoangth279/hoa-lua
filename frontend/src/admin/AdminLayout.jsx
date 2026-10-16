@@ -10,7 +10,7 @@ const navigation = [
   ['/admin/lien-he', 'Liên hệ', '✉'],
   ['/admin/workshops', 'Workshop', '◫'],
   ['/admin/campaigns', 'Campaign', '◎'],
-  ['/admin/bai-viet', 'Bài viết', '≡'],
+  ['/admin/cau-chuyen', 'Câu chuyện', '≡'],
   ['/admin/gallery', 'Thư viện', '▧'],
   ['/admin/cau-hinh', 'Cấu hình', '⚙'],
 ];

@@ -154,7 +154,7 @@ ON DUPLICATE KEY UPDATE setting_key = VALUES(setting_key);
 -- Source: migrations/003_update_contact_channels.sql
 INSERT INTO site_settings (setting_key, setting_value, setting_group) VALUES
 ('contact_email', 'hoalua.story@gmail.com', 'contact'),
-('contact_phone', '0989170149', 'contact'),
+('contact_phone', '0989.170.149', 'contact'),
 ('contact_address', 'Km 9, Đường Nguyễn Trãi, Phường Đại Mỗ, Thành phố Hà Nội, Việt Nam', 'contact'),
 ('facebook_url', 'https://www.facebook.com/profile.php?id=61594504626803', 'social'),
 ('tiktok_url', 'https://www.tiktok.com/@hoaluastory', 'social')
@@ -185,11 +185,7 @@ INSERT INTO workshops (id,slug,title,excerpt,description,location,starts_at,ends
 (3,'ke-chuyen-tren-lua','Kể chuyện trên lụa','Một buổi sáng cho gia đình cùng phác họa ký ức.','Hoạt động dành cho trẻ từ 7 tuổi đi cùng người lớn.','Thư viện Khoa học Tổng hợp, TP.HCM','2026-11-01 09:00:00','2026-11-01 11:30:00',20,0,TRUE)
 ON DUPLICATE KEY UPDATE title=VALUES(title),starts_at=VALUES(starts_at),ends_at=VALUES(ends_at),capacity=VALUES(capacity),price=VALUES(price),is_published=VALUES(is_published);
 
-INSERT INTO posts (slug,title,excerpt,content,category,is_published,published_at) VALUES
-('lua-trong-doi-song-duong-dai','Lụa trong đời sống đương đại: mềm mại nhưng không mong manh','Khi chất liệu truyền thống bước ra khỏi khung tranh và trở thành một cuộc đối thoại mới.','Lụa đang tìm thấy những hình thức mới trong nghệ thuật, thiết kế và giáo dục cộng đồng.','Câu chuyện',TRUE,'2026-09-12 08:00:00'),
-('gap-go-nghe-nhan-mau-tu-nhien','Gặp người giữ màu từ lá, vỏ cây và đất','Một buổi trò chuyện về sự kiên nhẫn, ký ức và những gam màu không bao giờ lặp lại.','Mỗi mẻ màu tự nhiên là kết quả của mùa, đất, nước và kinh nghiệm người làm nghề.','Chân dung',TRUE,'2026-09-05 08:00:00'),
-('nhat-ky-workshop-dau-tien','Những nét cọ đầu tiên trên lụa','Nhìn lại buổi gặp gỡ nơi mỗi người mang về một tác phẩm.','Không có hai bức lụa giống nhau, cũng như không có hai câu chuyện giống nhau.','Nhật ký',TRUE,'2026-08-28 08:00:00')
-ON DUPLICATE KEY UPDATE title=VALUES(title),excerpt=VALUES(excerpt),content=VALUES(content),category=VALUES(category),is_published=VALUES(is_published),published_at=VALUES(published_at);
+-- Story content is initialized by migrations/008_split_story_posts.sql.
 
 -- Source: migrations/005_update_workshops_content.sql
 ALTER TABLE workshops
@@ -216,3 +212,97 @@ ON DUPLICATE KEY UPDATE
   capacity = VALUES(capacity),
   price = VALUES(price),
   is_published = VALUES(is_published);
+
+-- Source: migrations/006_move_public_campaigns_to_db.sql
+-- Move the activities previously embedded in the frontend into editable DB records.
+-- Only insert missing slugs; preserve any content already edited by an admin.
+INSERT INTO campaigns (slug, title, excerpt, content, display_order, is_published)
+VALUES ('nhung-manh-lua-ghep', 'Những mảnh lụa ghép',
+  'Khám phá câu chuyện chất liệu và sự tỉ mẩn từ đôi tay thợ thủ công.',
+  'Chuỗi trò chuyện (talkshow) giúp mọi người hiểu thêm về kỹ thuật cắt tỉa cũng như về chất liệu thủ công bản địa. Hoạt động tôn vinh nét đẹp chất liệu lụa truyền thống, giúp cộng đồng lắng nghe câu chuyện thương hiệu VỤN Art và cảm nhận sâu sắc cái "tâm", sự tỉ mỉ trong từng mảnh lụa của nghệ nhân.',
+  1, TRUE)
+ON DUPLICATE KEY UPDATE slug = VALUES(slug);
+
+INSERT INTO campaigns (slug, title, excerpt, content, display_order, is_published)
+VALUES ('ban-tay-nghe-nhan', 'Bàn tay nghệ nhân',
+  'Nghệ thuật tái sinh lụa vụn – Đưa lối sống xanh hòa vào nhịp sống phố thị.',
+  'Đưa các tác phẩm lụa tái chế (sản phẩm của Vụn Art) vào những không gian quen thuộc như góc phố, quán xá đời thường. Hoạt động lan tỏa thẩm mỹ lụa ghép nghệ thuật và cảm hứng sống xanh bền vững, chứng minh rằng chất liệu thừa hoàn toàn có thể "tái sinh" thành một phần đẹp đẽ trong cuộc sống thường nhật.',
+  2, TRUE)
+ON DUPLICATE KEY UPDATE slug = VALUES(slug);
+
+INSERT INTO campaigns (slug, title, excerpt, content, display_order, is_published)
+VALUES ('dau-an-hoai-niem', 'Dấu ấn hoài niệm',
+  'Góp một mảnh ký ức – Dệt nên câu chuyện thanh xuân cùng cộng đồng.',
+  'Mời cộng đồng trẻ cùng tham gia đóng góp những mảnh lụa vụn và mảnh ký ức cá nhân để tạo nên một tác phẩm lụa nối dài được trưng bày lưu động. Hoạt động tạo ra không gian mở để người trẻ gặp gỡ, sẻ chia và lưu dấu những khoảnh khắc thanh xuân đồng hành cùng di sản lụa Việt.',
+  3, TRUE)
+ON DUPLICATE KEY UPDATE slug = VALUES(slug);
+
+-- Source: migrations/008_split_story_posts.sql
+-- Split the former singleton Story post into three independent posts.
+-- Preserve existing section edits and remove only the obsolete singleton.
+SET @hoa_lua_story_content = (SELECT content FROM posts WHERE slug = 'cau-chuyen-hoa-lua' AND JSON_VALID(content) = 1 LIMIT 1);
+SET @hoa_lua_story_published = (SELECT is_published FROM posts WHERE slug = 'cau-chuyen-hoa-lua' LIMIT 1);
+
+INSERT INTO posts (slug, title, excerpt, content, category, is_published, published_at)
+VALUES ('luu-giu-di-san-van-hoa-viet',
+COALESCE(NULLIF(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].title')), 'null'), 'Lưu giữ dòng chảy di sản & nét đẹp Văn hóa Việt'),
+'Lụa không chỉ là một chất liệu thủ công, mà là gạch nối lưu giữ lịch sử và bản sắc văn hóa Việt qua hàng thế kỷ.',
+COALESCE(NULLIF(CONCAT_WS(CHAR(10,10),
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[0].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[0].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[0].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[0].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[1].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[1].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[1].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[1].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[2].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[2].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[2].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[2].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[3].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[3].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[3].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[3].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[4].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[4].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[4].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[4].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[5].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[5].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[5].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[5].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[6].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[6].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[6].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[6].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[7].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[7].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[7].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[7].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[8].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[8].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[8].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[8].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[9].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[9].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[9].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[9].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[10].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[10].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[10].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[10].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[11].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[11].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[11].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[0].points[11].text'))) END), ''), CONCAT('Chiều sâu di sản: Lụa không chỉ là một chất liệu thủ công, mà là gạch nối lưu giữ lịch sử và bản sắc văn hóa Việt qua hàng thế kỷ.', CHAR(10,10), 'Hơi thở làng nghề: Từ những cuộn lụa ươm tơ truyền thống Vạn Phúc đến từng mảnh lụa vụn, tất cả đều chứa đựng vệt màu thời gian, tình yêu nghề và nhịp đập di sản nghìn năm.')),
+'Câu chuyện', COALESCE(@hoa_lua_story_published, 1), IF(COALESCE(@hoa_lua_story_published, 1) = 1, NOW(), NULL))
+ON DUPLICATE KEY UPDATE slug = VALUES(slug);
+
+INSERT INTO posts (slug, title, excerpt, content, category, is_published, published_at)
+VALUES ('luu-giu-nghe-nhan-song-xanh',
+COALESCE(NULLIF(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].title')), 'null'), 'Lưu giữ đôi tay nghệ nhân & tinh thần Sống Xanh bền vững'),
+'Đồng hành cùng Vụn Art, Họa Lụa nhìn thấy ở những mảnh lụa thừa không phải rác thải, mà là một vòng đời mới đầy tiềm năng.',
+COALESCE(NULLIF(CONCAT_WS(CHAR(10,10),
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[0].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[0].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[0].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[0].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[1].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[1].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[1].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[1].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[2].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[2].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[2].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[2].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[3].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[3].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[3].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[3].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[4].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[4].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[4].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[4].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[5].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[5].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[5].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[5].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[6].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[6].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[6].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[6].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[7].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[7].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[7].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[7].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[8].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[8].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[8].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[8].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[9].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[9].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[9].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[9].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[10].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[10].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[10].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[10].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[11].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[11].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[11].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[1].points[11].text'))) END), ''), CONCAT('Nghệ thuật tái sinh chất liệu: Đồng hành cùng Vụn Art, Họa Lụa nhìn thấy ở những mảnh lụa thừa không phải rác thải, mà là một vòng đời mới đầy tiềm năng.', CHAR(10,10), 'Bàn tay kiên nhẫn: Qua sự tỉ mỉ của những "người thợ đặc biệt", từng mảnh vụn được chọn lọc, cắt ghép để trở thành các bức tranh ghép lụa hay sản phẩm ứng dụng có hồn.', CHAR(10,10), 'Giá trị nhân văn: Ở đó, sống xanh không nằm ở lý thuyết xa xôi, mà hiện hữu trong sinh kế bền vững, sự trân trọng tài nguyên và tình người gửi gắm qua từng nếp vải.')),
+'Câu chuyện', COALESCE(@hoa_lua_story_published, 1), IF(COALESCE(@hoa_lua_story_published, 1) = 1, NOW(), NULL))
+ON DUPLICATE KEY UPDATE slug = VALUES(slug);
+
+INSERT INTO posts (slug, title, excerpt, content, category, is_published, published_at)
+VALUES ('luu-giu-ket-noi-the-he-tre',
+COALESCE(NULLIF(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].title')), 'null'), 'Lưu giữ sự kết nối & tiếp nối cùng thế hệ trẻ (Gen Z)'),
+'Họa Lụa không cố đóng khung truyền thống trong không gian bảo tàng hay quá khứ.',
+COALESCE(NULLIF(CONCAT_WS(CHAR(10,10),
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[0].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[0].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[0].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[0].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[1].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[1].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[1].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[1].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[2].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[2].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[2].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[2].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[3].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[3].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[3].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[3].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[4].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[4].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[4].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[4].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[5].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[5].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[5].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[5].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[6].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[6].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[6].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[6].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[7].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[7].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[7].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[7].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[8].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[8].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[8].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[8].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[9].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[9].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[9].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[9].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[10].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[10].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[10].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[10].text'))) END,
+CASE WHEN JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[11].label')) = 'STRING' AND JSON_TYPE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[11].text')) = 'STRING' THEN CONCAT(JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[11].label')), ': ', JSON_UNQUOTE(JSON_EXTRACT(@hoa_lua_story_content, '$.pillars.items[2].points[11].text'))) END), ''), CONCAT('Đưa di sản vào đời sống: Họa Lụa không cố đóng khung truyền thống trong không gian bảo tàng hay quá khứ.', CHAR(10,10), 'Không gian giao thoa: Chúng tôi tạo điều kiện để nghệ nhân, nghệ sĩ và thế hệ trẻ gặp gỡ, sẻ chia và cùng thực hành sáng tạo.', CHAR(10,10), 'Sức sống mới của lụa: Nhờ đó, lụa tiếp tục chuyển động — trở nên tử tế, bền vững, gần gũi hơn với nhịp sống hôm nay và tự hào đồng hành cùng người trẻ.')),
+'Câu chuyện', COALESCE(@hoa_lua_story_published, 1), IF(COALESCE(@hoa_lua_story_published, 1) = 1, NOW(), NULL))
+ON DUPLICATE KEY UPDATE slug = VALUES(slug);
+
+DELETE FROM posts WHERE slug = 'cau-chuyen-hoa-lua';
+SET @hoa_lua_story_content = NULL;
+SET @hoa_lua_story_published = NULL;

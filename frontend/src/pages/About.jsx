@@ -1,45 +1,34 @@
 import Seo from '../components/Seo';
 import hero from '../assets/hoa-lua-hero.png';
+import ContentState from '../components/ContentState';
+import { usePublicContent } from '../hooks/usePublicContent';
 
-const storyPillars = [
-  {
-    number: '01',
-    title: 'Lưu giữ dòng chảy di sản & nét đẹp Văn hóa Việt',
-    points: [
-      { label: 'Chiều sâu di sản', text: 'Lụa không chỉ là một chất liệu thủ công, mà là gạch nối lưu giữ lịch sử và bản sắc văn hóa Việt qua hàng thế kỷ.' },
-      { label: 'Hơi thở làng nghề', text: 'Từ những cuộn lụa ươm tơ truyền thống Vạn Phúc đến từng mảnh lụa vụn, tất cả đều chứa đựng vệt màu thời gian, tình yêu nghề và nhịp đập di sản nghìn năm.' },
-    ],
-  },
-  {
-    number: '02',
-    title: 'Lưu giữ đôi tay nghệ nhân & tinh thần Sống Xanh bền vững',
-    points: [
-      { label: 'Nghệ thuật tái sinh chất liệu', text: 'Đồng hành cùng Vụn Art, Họa Lụa nhìn thấy ở những mảnh lụa thừa không phải rác thải, mà là một vòng đời mới đầy tiềm năng.' },
-      { label: 'Bàn tay kiên nhẫn', text: 'Qua sự tỉ mỉ của những "người thợ đặc biệt", từng mảnh vụn được chọn lọc, cắt ghép để trở thành các bức tranh ghép lụa hay sản phẩm ứng dụng có hồn.' },
-      { label: 'Giá trị nhân văn', text: 'Ở đó, sống xanh không nằm ở lý thuyết xa xôi, mà hiện hữu trong sinh kế bền vững, sự trân trọng tài nguyên và tình người gửi gắm qua từng nếp vải.' },
-    ],
-  },
-  {
-    number: '03',
-    title: 'Lưu giữ sự kết nối & tiếp nối cùng thế hệ trẻ (Gen Z)',
-    points: [
-      { label: 'Đưa di sản vào đời sống', text: 'Họa Lụa không cố đóng khung truyền thống trong không gian bảo tàng hay quá khứ.' },
-      { label: 'Không gian giao thoa', text: 'Chúng tôi tạo điều kiện để nghệ nhân, nghệ sĩ và thế hệ trẻ gặp gỡ, sẻ chia và cùng thực hành sáng tạo.' },
-      { label: 'Sức sống mới của lụa', text: 'Nhờ đó, lụa tiếp tục chuyển động — trở nên tử tế, bền vững, gần gũi hơn với nhịp sống hôm nay và tự hào đồng hành cùng người trẻ.' },
-    ],
-  },
-];
+function PostParagraphs({ content }) {
+  return content.split(/\r?\n\s*\r?\n/).filter((paragraph) => paragraph.trim()).map((paragraph, index) => {
+    const colon = paragraph.indexOf(':');
+    return <p className="content-copy" key={index}>{colon > 0 ? <><strong>{paragraph.slice(0, colon)}:</strong>{' '}{paragraph.slice(colon + 1).trim()}</> : paragraph}</p>;
+  });
+}
 
 function About() {
+  const { data, loading, error, retry } = usePublicContent('/story');
+  const posts = data || [];
+
   return <div className="inner-page story-page">
-    <Seo title="Câu chuyện Họa Lụa" description="Tìm hiểu câu chuyện Họa Lụa: lưu giữ di sản lụa Việt, tái sinh chất liệu thủ công và kết nối các thế hệ qua nghệ thuật." />
+    <Seo title="Câu chuyện Họa Lụa" description="Tìm hiểu câu chuyện Họa Lụa: lưu giữ di sản lụa Việt, tái sinh chất liệu thủ công và kết nối các thế hệ qua nghệ thuật." image={hero} />
     <section className="story-intro"><div className="container story-intro__grid">
       <figure className="story-intro__image"><img src={hero} alt="Dải lụa đỏ và dụng cụ thủ công truyền thống" /></figure>
       <div className="story-intro__content"><p className="section-index">Từ chất liệu đến kết nối</p><h1>Lụa dệt ký ức<br /><em>giữ màu thời gian</em></h1><p>Lụa lưu dấu từng nét cọ, từng lớp màu và cả nhịp thở của người tạo tác. Họa Lụa mở ra những không gian để nghệ nhân, nghệ sĩ và công chúng cùng gặp gỡ, chia sẻ và thực hành.</p><p>Chúng tôi không cố đóng khung truyền thống. Chúng tôi tạo điều kiện để truyền thống tiếp tục chuyển động — tử tế, bền vững và gần gũi với hôm nay.</p></div>
     </div></section>
     <section className="story-pillars" aria-labelledby="story-pillars-title"><div className="container">
       <div className="story-pillars__heading"><p className="section-index">Những điều lụa lưu giữ</p><h2 id="story-pillars-title" className="story-pillars__split-title"><span>Từ những mảnh lụa nhỏ,</span><em>mở ra những kết nối dài lâu.</em></h2></div>
-      <div className="story-pillars__list">{storyPillars.map((pillar) => <article className="story-pillar" key={pillar.number}><span className="story-pillar__number">{pillar.number}</span><div><h3>{pillar.title}</h3>{pillar.points.map((point) => <p key={point.label}><strong>{point.label}:</strong> {point.text}</p>)}</div></article>)}</div>
+      <div className="story-pillars__list">
+        <ContentState loading={loading} error={error} empty={!posts.length ? 'Các mục Câu chuyện đang được cập nhật.' : ''} onRetry={retry} />
+        {posts.map((post) => <article className="story-pillar" key={post.id}>
+          <span className="story-pillar__number">{post.number}</span>
+          <div><h3>{post.title}</h3><PostParagraphs content={post.content} /></div>
+        </article>)}
+      </div>
     </div></section>
   </div>;
 }

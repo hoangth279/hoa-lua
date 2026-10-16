@@ -12,8 +12,4 @@ INSERT INTO workshops (id,slug,title,excerpt,description,location,starts_at,ends
 (3,'ke-chuyen-tren-lua','Kể chuyện trên lụa','Một buổi sáng cho gia đình cùng phác họa ký ức.','Hoạt động dành cho trẻ từ 7 tuổi đi cùng người lớn.','Thư viện Khoa học Tổng hợp, TP.HCM','2026-11-01 09:00:00','2026-11-01 11:30:00',20,0,TRUE)
 ON DUPLICATE KEY UPDATE title=VALUES(title),starts_at=VALUES(starts_at),ends_at=VALUES(ends_at),capacity=VALUES(capacity),price=VALUES(price),is_published=VALUES(is_published);
 
-INSERT INTO posts (slug,title,excerpt,content,category,is_published,published_at) VALUES
-('lua-trong-doi-song-duong-dai','Lụa trong đời sống đương đại: mềm mại nhưng không mong manh','Khi chất liệu truyền thống bước ra khỏi khung tranh và trở thành một cuộc đối thoại mới.','Lụa đang tìm thấy những hình thức mới trong nghệ thuật, thiết kế và giáo dục cộng đồng.','Câu chuyện',TRUE,'2026-09-12 08:00:00'),
-('gap-go-nghe-nhan-mau-tu-nhien','Gặp người giữ màu từ lá, vỏ cây và đất','Một buổi trò chuyện về sự kiên nhẫn, ký ức và những gam màu không bao giờ lặp lại.','Mỗi mẻ màu tự nhiên là kết quả của mùa, đất, nước và kinh nghiệm người làm nghề.','Chân dung',TRUE,'2026-09-05 08:00:00'),
-('nhat-ky-workshop-dau-tien','Những nét cọ đầu tiên trên lụa','Nhìn lại buổi gặp gỡ nơi mỗi người mang về một tác phẩm.','Không có hai bức lụa giống nhau, cũng như không có hai câu chuyện giống nhau.','Nhật ký',TRUE,'2026-08-28 08:00:00')
-ON DUPLICATE KEY UPDATE title=VALUES(title),excerpt=VALUES(excerpt),content=VALUES(content),category=VALUES(category),is_published=VALUES(is_published),published_at=VALUES(published_at);
+-- Story content is initialized by migrations/008_split_story_posts.sql.

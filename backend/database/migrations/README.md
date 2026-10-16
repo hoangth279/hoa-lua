@@ -7,6 +7,7 @@ mysql -u root -p < backend/database/migrations/001_initial_schema.sql
 mysql -u root -p hoa_lua < backend/database/migrations/002_admin_management.sql
 mysql -u root -p hoa_lua < backend/database/migrations/003_update_contact_channels.sql
 mysql -u root -p hoa_lua < backend/database/seeds/001_demo_content.sql
+mysql -u root -p hoa_lua < backend/database/migrations/008_split_story_posts.sql
 ```
 
 Khi thay đổi schema, hãy thêm file migration mới theo thứ tự `002_...sql`; không sửa migration đã chạy trên production.
@@ -14,3 +15,13 @@ Khi thay đổi schema, hãy thêm file migration mới theo thứ tự `002_...
 Migration `002_admin_management.sql` tạo bảng tài khoản quản trị, cấu hình website và nhật ký thao tác. Migration không tạo sẵn mật khẩu admin.
 
 Migration `003_update_contact_channels.sql` cập nhật email, điện thoại, địa chỉ, Facebook, TikTok và xóa cấu hình Instagram/YouTube cũ.
+
+Migration `006_move_public_campaigns_to_db.sql` chuyển ba hoạt động trước đây viết sẵn trong frontend sang bảng `campaigns`. Chạy trên database đang dùng bằng `mysql -u root -p hoa_lua < backend/database/migrations/006_move_public_campaigns_to_db.sql`. Migration chỉ thêm slug chưa tồn tại, không ghi đè nội dung admin đã sửa và có thể chạy lại.
+
+Trang chủ và `/hoat-dong` đọc campaign từ API. Nội dung campaign là văn bản thuần, hỗ trợ xuống dòng.
+
+Migration `008_split_story_posts.sql` lưu riêng ba mục 01, 02, 03 vào ba bản ghi `posts`. Mỗi bản ghi có tiêu đề và nội dung văn bản thuần của một mục. Phần ảnh, mở đầu và các tiêu đề khối vẫn cố định trong `About.jsx`, không lưu trong DB. Admin `/admin/cau-chuyen` có ba form lưu độc lập; user `/gioi-thieu` đọc các mục đã xuất bản qua `/api/story`.
+
+Migration 007 là phiên bản cũ lưu toàn trang trong một post. Migration 008 chuyển ba nhóm của bản ghi cũ sang ba post, giữ chỉnh sửa và trạng thái xuất bản, sau đó xóa riêng post gộp `cau-chuyen-hoa-lua`. Các post khác không bị xóa. Chạy lại migration 008 không ghi đè ba post đã có. Cài mới chỉ cần migration 008, không cần chạy 007.
+
+Với database đang chạy, chọn đúng DB rồi chạy riêng migration 008. Không import lại toàn bộ bundle production vì bundle còn chứa seed dữ liệu cho lần cài đầu.
