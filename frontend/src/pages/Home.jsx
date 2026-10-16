@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import heroArtwork from '../assets/hoa-lua-hero.png';
 import Seo from '../components/Seo';
 import SectionHeading from '../components/SectionHeading';
+import WorkshopTitle from '../components/WorkshopTitle';
 import { useWorkshops } from '../hooks/useWorkshops';
 import { campaigns, formatApiDate, formatApiTimeRange, formatPrice } from '../data/content';
 
@@ -16,7 +17,7 @@ function Home() {
         <div className="hero__veil" />
         <div className="container hero__content">
           <p className="eyebrow">Chiến dịch nghệ thuật phi lợi nhuận</p>
-          <h1 id="hero-title" className="hero__split-title"><span>Họa Lụa — Một nét tơ mềm,</span><em>một dòng chuyện kể</em></h1>
+          <h1 id="hero-title" className="hero__split-title"><span>Họa Lụa</span><span>Một nét tơ mềm,</span><em>một dòng chuyện kể</em></h1>
           <p className="hero__lead">Họa Lụa đưa vẻ đẹp của lụa, thủ công và văn hóa Việt vào đời sống đương đại — bằng những trải nghiệm ai cũng có thể chạm, cảm và cùng tạo nên.</p>
           <div className="hero__actions">
             <a className="button button--primary" href="#workshops">Khám phá workshop <span aria-hidden="true">↗</span></a>
@@ -53,7 +54,7 @@ function Home() {
           <div className={`workshop-grid${featuredWorkshops.length === 2 ? ' workshop-grid--pair' : ''}`}>
             {featuredWorkshops.map((item, index) => <article className={`workshop-card ${featuredWorkshops.length > 2 && index === 0 ? 'workshop-card--featured' : ''}`} key={item.id}>
               <div className="workshop-card__image"><img src={item.coverImage || heroArtwork} alt="" /><span>{item.category}</span></div>
-              <div className="workshop-card__body"><p className="card-meta">{formatApiDate(item.startsAt)} · {formatApiTimeRange(item.startsAt, item.endsAt)}</p><h3>{item.title}</h3><p>{item.excerpt}</p><div className="card-bottom"><strong>{formatPrice(item.price)}</strong><Link to={`/workshop?chon=${item.id}`} aria-label={`Đăng ký ${item.title}`}>Đăng ký <span aria-hidden="true">→</span></Link></div></div>
+              <div className="workshop-card__body"><p className="card-meta">{formatApiDate(item.startsAt)} · {formatApiTimeRange(item.startsAt, item.endsAt)}</p><WorkshopTitle as="h3" title={item.title} /><p>{item.excerpt}</p><div className="card-bottom"><strong>{formatPrice(item.price)}</strong><Link to={`/workshop?chon=${item.id}`} aria-label={`Đăng ký ${item.title}`}>Đăng ký <span aria-hidden="true">→</span></Link></div></div>
             </article>)}
           </div>
         </div>

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Seo from '../components/Seo';
 import BookingForm from '../components/BookingForm';
+import WorkshopTitle from '../components/WorkshopTitle';
 import { useWorkshops } from '../hooks/useWorkshops';
 import { formatApiDate, formatApiTimeRange, formatPrice } from '../data/content';
 import heroArtwork from '../assets/hoa-lua-hero.png';
@@ -32,7 +33,7 @@ function Workshops() {
           <img src={item.coverImage || heroArtwork} alt="" />
           <div>
             <p className="card-meta">{item.category}</p>
-            <h2>{item.title}</h2>
+            <WorkshopTitle as="h2" title={item.title} />
             <p>{item.excerpt}</p>
             <ul>
               <li>{formatApiDate(item.startsAt)} · {formatApiTimeRange(item.startsAt, item.endsAt)}</li>
