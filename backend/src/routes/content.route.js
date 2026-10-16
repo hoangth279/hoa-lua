@@ -9,5 +9,7 @@ router.get('/workshops', c.listWorkshops);
 router.get('/posts', c.listPosts);
 router.get('/posts/:slug', c.getPost);
 router.get('/gallery', c.listGallery);
+router.get('/articles', c.listArticles);
+router.get('/articles/:slug', c.getArticle);
 
 module.exports = router;

@@ -5,7 +5,7 @@ import { SITE_NAME, SITE_URL } from '../lib/seo';
 const DEFAULT_DESCRIPTION = 'Họa Lụa là chiến dịch nghệ thuật phi lợi nhuận kết nối lụa, thủ công và văn hóa Việt với đời sống đương đại.';
 const DEFAULT_IMAGE = `${SITE_URL}/og.png`;
 
-function Seo({ title, description = DEFAULT_DESCRIPTION, image, type = 'website', noIndex = false }) {
+function Seo({ title, description = DEFAULT_DESCRIPTION, image, type = 'website', noIndex = false, publishedAt }) {
   const { pathname } = useLocation();
   const canonicalUrl = `${SITE_URL}${pathname}`;
   const absoluteImage = image?.startsWith('http') ? image : image ? `${SITE_URL}${image}` : DEFAULT_IMAGE;
@@ -31,6 +31,20 @@ function Seo({ title, description = DEFAULT_DESCRIPTION, image, type = 'website'
     inLanguage: 'vi-VN',
     publisher: { '@id': `${SITE_URL}/#organization` },
   } : null;
+  const articleSchema = (type === 'article' && publishedAt) ? {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${canonicalUrl}#article`,
+    headline: title,
+    description,
+    image: absoluteImage,
+    datePublished: publishedAt,
+    dateModified: publishedAt,
+    inLanguage: 'vi-VN',
+    mainEntityOfPage: { '@id': `${canonicalUrl}#webpage` },
+    author: { '@id': `${SITE_URL}/#organization` },
+    publisher: { '@id': `${SITE_URL}/#organization` },
+  } : null;
 
   return (
     <Helmet>
@@ -53,6 +67,7 @@ function Seo({ title, description = DEFAULT_DESCRIPTION, image, type = 'website'
 
       <script type="application/ld+json">{JSON.stringify(pageSchema)}</script>
       {websiteSchema && <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>}
+      {articleSchema && <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>}
     </Helmet>
   );
 }

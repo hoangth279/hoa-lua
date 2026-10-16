@@ -3,6 +3,7 @@ import heroArtwork from '../assets/hoa-lua-hero.png';
 import Seo from '../components/Seo';
 import SectionHeading from '../components/SectionHeading';
 import WorkshopTitle from '../components/WorkshopTitle';
+import ArticleTitle from '../components/ArticleTitle';
 import ContentState from '../components/ContentState';
 import { usePublicContent } from '../hooks/usePublicContent';
 import { useWorkshops } from '../hooks/useWorkshops';
@@ -12,6 +13,8 @@ function Home() {
   const { workshops } = useWorkshops();
   const campaignContent = usePublicContent('/campaigns');
   const campaigns = campaignContent.data || [];
+  const articleContent = usePublicContent('/articles');
+  const articles = articleContent.data || [];
   const featuredWorkshops = workshops.slice(0, 3);
   return (
     <div className="home-page">
@@ -60,6 +63,18 @@ function Home() {
             {featuredWorkshops.map((item, index) => <article className={`workshop-card ${featuredWorkshops.length > 2 && index === 0 ? 'workshop-card--featured' : ''}`} key={item.id}>
               <div className="workshop-card__image"><img src={item.coverImage || heroArtwork} alt="" /><span>{item.category}</span></div>
               <div className="workshop-card__body"><p className="card-meta">{formatApiDate(item.startsAt)} · {formatApiTimeRange(item.startsAt, item.endsAt)}</p><WorkshopTitle as="h3" title={item.title} /><p>{item.excerpt}</p><div className="card-bottom"><strong>{formatPrice(item.price)}</strong><Link to={`/workshop?chon=${item.id}`} aria-label={`Đăng ký ${item.title}`}>Đăng ký <span aria-hidden="true">→</span></Link></div></div>
+            </article>)}
+          </div>
+        </div>
+      </section>
+      <section className="articles section" id="articles">
+        <div className="container">
+          <SectionHeading index="04" eyebrow="Thông tin hữu ích" title={<>Câu chuyện phía sau<br /><em>từng mảnh lụa vụn</em></>} action={<Link className="text-link" to="/thu-vien">Xem thư viện →</Link>} />
+          <div className="workshop-grid workshop-grid--equal">
+            <ContentState loading={articleContent.loading} error={articleContent.error} empty={!articles.length ? 'Hiện chưa có bài viết nào được công bố.' : ''} onRetry={articleContent.retry} />
+            {articles.map((item) => <article className="workshop-card" key={item.id}>
+              <div className="workshop-card__image"><img src={item.coverImage || heroArtwork} alt="" /></div>
+              <div className="workshop-card__body"><ArticleTitle as="h3" title={item.title} /><p>{item.excerpt}</p><div className="card-bottom"><Link to={`/thu-vien/${item.slug}`}>Đọc tiếp <span aria-hidden="true">→</span></Link></div></div>
             </article>)}
           </div>
         </div>

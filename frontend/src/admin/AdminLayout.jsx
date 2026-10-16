@@ -11,6 +11,7 @@ const navigation = [
   ['/admin/workshops', 'Workshop', '◫'],
   ['/admin/campaigns', 'Campaign', '◎'],
   ['/admin/cau-chuyen', 'Câu chuyện', '≡'],
+  ['/admin/thong-tin-huu-ich', 'Thông tin hữu ích', '✎'],
   ['/admin/gallery', 'Thư viện', '▧'],
   ['/admin/cau-hinh', 'Cấu hình', '⚙'],
 ];

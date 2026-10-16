@@ -10,8 +10,8 @@ const links = [
   ['/gioi-thieu', 'Câu chuyện'],
   ['/hoat-dong', 'Hoạt động'],
   ['/workshop', 'Workshop'],
-  ['/ve-chung-toi', 'Về chúng tôi'],
   ['/thu-vien', 'Thư viện'],
+  ['/ve-chung-toi', 'Về chúng tôi'],
 ];
 
 function MainLayout() {

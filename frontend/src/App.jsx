@@ -9,6 +9,7 @@ import Activities from './pages/Activities';
 import Workshops from './pages/Workshops';
 import AboutUs from './pages/AboutUs';
 import Gallery from './pages/Gallery';
+import ArticleDetail from './pages/ArticleDetail';
 import Contact from './pages/Contact';
 import AdminStory from './admin/AdminStory';
 import { AdminAuthProvider, AdminGuard } from './admin/AdminAuth';
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/workshop" element={<Workshops />} />
                     <Route path="/ve-chung-toi" element={<AboutUs />} />
                     <Route path="/thu-vien" element={<Gallery />} />
+                    <Route path="/thu-vien/:slug" element={<ArticleDetail />} />
                     <Route path="/lien-he" element={<Contact />} />
                     <Route path="/bai-viet" element={<Navigate to="/gioi-thieu" replace />} />
                     <Route path="/bai-viet/:slug" element={<Navigate to="/gioi-thieu" replace />} />
@@ -49,6 +51,7 @@ function App() {
                     <Route path="campaigns" element={<AdminResource key="campaigns" resource="campaigns" />} />
                     <Route path="cau-chuyen" element={<AdminStory />} />
                     <Route path="bai-viet" element={<Navigate to="/admin/cau-chuyen" replace />} />
+                    <Route path="thong-tin-huu-ich" element={<AdminResource key="articles" resource="articles" />} />
                     <Route path="gallery" element={<AdminResource key="gallery" resource="gallery" />} />
                     <Route path="cau-hinh" element={<AdminSettings />} />
                   </Route>

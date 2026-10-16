@@ -8,6 +8,7 @@ mysql -u root -p hoa_lua < backend/database/migrations/002_admin_management.sql
 mysql -u root -p hoa_lua < backend/database/migrations/003_update_contact_channels.sql
 mysql -u root -p hoa_lua < backend/database/seeds/001_demo_content.sql
 mysql -u root -p hoa_lua < backend/database/migrations/008_split_story_posts.sql
+mysql -u root -p hoa_lua < backend/database/migrations/009_add_articles.sql
 ```
 
 Khi thay đổi schema, hãy thêm file migration mới theo thứ tự `002_...sql`; không sửa migration đã chạy trên production.
@@ -25,3 +26,5 @@ Migration `008_split_story_posts.sql` lưu riêng ba mục 01, 02, 03 vào ba b�
 Migration 007 là phiên bản cũ lưu toàn trang trong một post. Migration 008 chuyển ba nhóm của bản ghi cũ sang ba post, giữ chỉnh sửa và trạng thái xuất bản, sau đó xóa riêng post gộp `cau-chuyen-hoa-lua`. Các post khác không bị xóa. Chạy lại migration 008 không ghi đè ba post đã có. Cài mới chỉ cần migration 008, không cần chạy 007.
 
 Với database đang chạy, chọn đúng DB rồi chạy riêng migration 008. Không import lại toàn bộ bundle production vì bundle còn chứa seed dữ liệu cho lần cài đầu.
+
+Migration `009_add_articles.sql` tạo bảng `articles` (3 bài viết SEO cho mục "Thông tin hữu ích" ở trang chủ và trang Thư viện) cùng dữ liệu khởi tạo 3 bài. Bài có quy trình nhiều bước dùng thêm cột `steps_json` (mảng JSON `{step, title, body, image}`) để FE render bố cục ảnh/chữ so le; các bài còn lại để `NULL`. Có thể chạy lại, không ghi đè nội dung admin đã sửa (`ON DUPLICATE KEY UPDATE`).

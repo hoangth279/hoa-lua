@@ -49,7 +49,8 @@ const resources = {
   campaigns: { table: 'campaigns', fields: ['slug','title','excerpt','content','status','start_date','end_date','cover_image','display_order','is_published'], required: ['slug','title','excerpt'] },
   workshops: { table: 'workshops', fields: ['slug','title','excerpt','description','category','location','starts_at','ends_at','capacity','price','cover_image','is_published'], required: ['slug','title','excerpt','location','starts_at','ends_at','capacity'] },
   posts: { table: 'posts', fields: ['slug','title','excerpt','content','category','cover_image','is_published','published_at'], required: ['slug','title','excerpt','content','category'] },
-  gallery: { table: 'gallery_items', fields: ['title','description','media_type','media_url','thumbnail_url','display_order','is_published'], required: ['title','media_type','media_url'] }
+  gallery: { table: 'gallery_items', fields: ['title','description','media_type','media_url','thumbnail_url','display_order','is_published'], required: ['title','media_type','media_url'] },
+  articles: { table: 'articles', fields: ['slug','title','excerpt','content','steps_json','cover_image','display_order','is_published','published_at'], required: ['slug','title','excerpt','content'] }
 };
 
 const normalizeValue = (field, value) => {
