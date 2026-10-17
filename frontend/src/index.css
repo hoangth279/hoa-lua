@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap');
 
 :root { --ink:#221d17; --muted:#6f655b; --paper:#f5f0e6; --paper-deep:#e8dece; --red:#9e2f25; --red-dark:#73231e; --line:rgba(34,29,23,.18); --serif:'Playfair Display',Georgia,serif; --sans:'Be Vietnam Pro',Arial,sans-serif; color:var(--ink); background:var(--paper); font-family:var(--sans); font-synthesis:none; text-rendering:optimizeLegibility; }
 * { box-sizing:border-box; }
@@ -77,8 +77,9 @@ h1 { max-width:760px; margin:22px 0; font:500 clamp(58px,7.1vw,108px)/.98 var(--
 .workshop-card__image span { position:absolute; left:14px; top:14px; padding:7px 10px; background:rgba(245,240,230,.9); font-size:9px; letter-spacing:.12em; text-transform:uppercase; }
 .workshop-card__body { display:flex; flex:1; flex-direction:column; padding:26px; }
 .workshop-card h2,.workshop-card h3,.post-card h3 { margin:10px 0; font:500 27px/1.18 var(--serif); }
-.workshop-title--split { container-type:inline-size; }
-.workshop-title--split>span { display:block; white-space:nowrap; font-size:min(1em,5.8cqi); }
+:is(.workshop-card,.workshop-list__item,.form-card__intro) .workshop-title--split { font-weight:600; line-height:1.4; }
+.workshop-title--split>span { display:block; width:max-content; white-space:nowrap; text-wrap:nowrap; }
+.workshop-title--split>span+span { margin-top:4px; font-size:1em; font-weight:600; line-height:inherit; }
 .workshop-card__body>p:not(.card-meta),.post-card>p:last-child { margin:0; color:var(--muted); font-size:13px; line-height:1.7; }
 .card-bottom { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:auto; padding-top:28px; border-top:1px solid var(--line); font-size:12px; }
 .card-bottom a { text-decoration:none; color:var(--red); }
@@ -413,6 +414,9 @@ h1 { max-width:760px; margin:22px 0; font:500 clamp(58px,7.1vw,108px)/.98 var(--
 @media (prefers-reduced-motion:reduce) { html{scroll-behavior:auto}*{transition-duration:.01ms!important} }
 
 /* Library: comfortable Vietnamese typography and a clear reading hierarchy. */
+.workshop-card .library-card-title { margin:0 0 14px; font-size:22px; font-weight:600; line-height:1.25; letter-spacing:-.015em; }
+.library-card-title>span { display:block; width:max-content; white-space:nowrap; text-wrap:nowrap; }
+.library-card-title>span+span { margin-top:0; color:var(--ink); font:inherit; }
 .library-page .page-hero { padding:72px 0 44px; border-bottom:1px solid var(--line); }
 .library-page .page-hero h1 { max-width:860px; font-size:clamp(36px,4vw,54px); line-height:1.3; letter-spacing:-.02em; }
 .library-page .page-hero h1>span,.library-page .page-hero h1>em { white-space:normal; }
@@ -438,8 +442,9 @@ h1 { max-width:760px; margin:22px 0; font:500 clamp(58px,7.1vw,108px)/.98 var(--
 .article-toc { position:sticky; top:120px; max-height:calc(100svh - 144px); overflow-y:auto; padding:0 24px 8px 0; border-right:1px solid var(--line); }
 .article-sidebar { align-self:stretch; }
 .article-toc>p { margin:0 0 20px; color:var(--red); font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; }
+.article-toc__toggle { display:none; }
 .article-toc ol { list-style:none; margin:0; padding:0; display:grid; gap:16px; }
-.article-toc a { display:block; text-decoration:none; font-size:13px; line-height:1.75; color:#62574d; transition:color .2s; }
+.article-toc a { display:block; padding-block:3px; text-decoration:none; font-size:13px; line-height:1.75; color:#62574d; transition:color .2s; }
 .article-toc a:hover { color:var(--red); text-decoration:underline; text-underline-offset:4px; }
 .library-article .article-body { width:100%; min-width:0; margin:0; padding:0; font:400 16px/1.95 var(--sans); color:#493f36; }
 .article-summary { padding:24px 28px; margin-bottom:36px; background:#eee5d7; border-left:3px solid var(--red); }
@@ -469,6 +474,11 @@ h1 { max-width:760px; margin:22px 0; font:500 clamp(58px,7.1vw,108px)/.98 var(--
 @media(max-width:760px) {
   .article-layout { grid-template-columns:minmax(0,1fr); gap:32px; padding-block:32px 64px; }
   .article-toc { position:static; max-height:none; padding:22px; border:1px solid var(--line); }
+  .article-toc>p { display:none; }
+  .article-toc__toggle { display:flex; width:100%; align-items:center; justify-content:space-between; gap:16px; min-height:44px; border:0; padding:0; background:none; color:var(--red); text-align:left; font-size:13px; font-weight:600; cursor:pointer; }
+  .article-toc__toggle:focus-visible { outline:2px solid var(--red); outline-offset:4px; }
+  .article-toc:not(.article-toc--expanded) ol { display:none; }
+  .article-toc--expanded ol { margin-top:16px; }
   .article-toc ol { gap:12px; }
   .article-toc>p { margin-bottom:16px; }
   .library-article .article-header { padding:24px 0 32px; }
@@ -477,7 +487,7 @@ h1 { max-width:760px; margin:22px 0; font:500 clamp(58px,7.1vw,108px)/.98 var(--
   .article-title__subtitle { font-size:.76em; }
   .library-article .article-deck { font-size:14px; }
   .library-article .article-cover { width:calc(100% - 32px); aspect-ratio:16/10; max-height:400px; height:auto; }
-  .library-article .article-body { font-size:15px; line-height:1.95; }
+  .library-article .article-body { font-size:16px; line-height:1.9; }
   .article-summary { padding:20px; margin-bottom:28px; }
   .library-article .article-body h2 { margin-top:36px; font-size:26px; }
   .library-article .article-step h2 { margin:0; font-size:25px; }

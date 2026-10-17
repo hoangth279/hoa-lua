@@ -15,10 +15,24 @@ const legacyHeadings = new Set([
 ]);
 
 export function parseArticleContent(content = '') {
-  return content.replace(/\r\n/g, '\n').split(/\n\s*\n/).map((text) => text.trim()).filter(Boolean).map((text, index) => {
+  const blocks = [];
+  let paragraph = [];
+  const flushParagraph = () => {
+    if (paragraph.length) blocks.push({ text: paragraph.join('\n'), type: 'paragraph' });
+    paragraph = [];
+  };
+  for (const line of (content || '').replace(/\r\n?/g, '\n').split('\n')) {
+    const text = line.trim();
     const heading = text.match(/^#{1,3}\s+(.+)$/);
-    return { text: heading ? heading[1] : text, type: heading || legacyHeadings.has(text) ? 'heading' : 'paragraph', id: `section-${index}` };
-  });
+    if (!text || heading || legacyHeadings.has(text)) {
+      flushParagraph();
+      if (text) blocks.push({ text: heading ? heading[1] : text, type: 'heading' });
+    } else {
+      paragraph.push(text);
+    }
+  }
+  flushParagraph();
+  return blocks.map((block, index) => ({ ...block, id: `section-${index}` }));
 }
 
 export function parseArticleSteps(value) {
