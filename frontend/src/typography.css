@@ -41,6 +41,7 @@
 
 /* Fit the two story lines together, including after the web font loads. */
 .story-intro__content { min-width: 0; }
+.story-intro__image img { object-position: center; }
 .story-intro__title > span, .story-intro__title > em {
   display: block;
   width: max-content;

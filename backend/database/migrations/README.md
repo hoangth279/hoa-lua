@@ -1,5 +1,9 @@
 # MySQL migrations
 
+Migration `012_add_article_body_images.sql` chèn ảnh minh họa vào giữa nội dung hai bài `tranh-thu-cong-lam-tu-lua` và `qua-tang-lam-tu-lua`, dùng cú pháp Markdown `![alt](/articles/ten-file.jpg)` ngay trong cột `content`. FE (`frontend/src/components/articleContent.js`) tự nhận diện các dòng này thành block ảnh, và gộp các ảnh liền kề thành một dải ảnh đôi (`article-gallery--pair`). Chạy riêng migration 012 trên database đang dùng; không import lại bundle production.
+
+Migration `011_update_article_covers.sql` cập nhật ảnh bìa cho hai bài `tranh-thu-cong-lam-tu-lua` và `qua-tang-lam-tu-lua`, dùng file trong `frontend/public/articles/`. Chỉ thay `cover_image`, giữ nguyên nội dung và ảnh các bước. Với database đang chạy, chạy riêng migration 011 trên đúng database; không import lại bundle production.
+
 Migration `010_add_threads_contact.sql` thêm Threads vào cấu hình mạng xã hội và không ghi đè URL đã chỉnh trong admin. Với database đang chạy, chọn đúng DB và chạy riêng file migration này; không import lại bundle production. API `/api/settings` trả về `threads_url`, có thể sửa tại trang Cấu hình website trong admin.
 
 Chạy từ thư mục gốc dự án:
@@ -11,6 +15,9 @@ mysql -u root -p hoa_lua < backend/database/migrations/003_update_contact_channe
 mysql -u root -p hoa_lua < backend/database/seeds/001_demo_content.sql
 mysql -u root -p hoa_lua < backend/database/migrations/008_split_story_posts.sql
 mysql -u root -p hoa_lua < backend/database/migrations/009_add_articles.sql
+mysql -u root -p hoa_lua < backend/database/migrations/010_add_threads_contact.sql
+mysql -u root -p hoa_lua < backend/database/migrations/011_update_article_covers.sql
+mysql -u root -p hoa_lua < backend/database/migrations/012_add_article_body_images.sql
 ```
 
 Khi thay đổi schema, hãy thêm file migration mới theo thứ tự `002_...sql`; không sửa migration đã chạy trên production.

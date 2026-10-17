@@ -3,7 +3,7 @@
 .contact-page .contact-hero h1 { margin: 20px 0; font-size: clamp(40px, 4.5vw, 64px); line-height: 1.25; text-wrap: balance; }
 .contact-hero__lead { max-width: 540px; margin: 0; color: var(--muted); font-size: 17px; line-height: 1.8; text-wrap: pretty; }
 .contact-hero__art { margin: 0; padding: 12px; border: 1px solid var(--line); transform: rotate(2deg); background: var(--paper); }
-.contact-hero__art img { width: 100%; aspect-ratio: 1.4; object-fit: cover; object-position: 65% center; }
+.contact-hero__art img { width: 100%; aspect-ratio: 1.4; object-fit: cover; object-position: center; }
 .contact-hero__art figcaption { margin-top: 10px; font-size: 12px; color: var(--muted); text-align: center; }
 .contact-page .contact-section { padding: 80px 0 96px; }
 .contact-page .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(40px, 6vw, 88px); align-items: start; }

@@ -24,6 +24,12 @@ export function parseArticleContent(content = '') {
   for (const line of (content || '').replace(/\r\n?/g, '\n').split('\n')) {
     const text = line.trim();
     const heading = text.match(/^#{1,3}\s+(.+)$/);
+    const image = text.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (image) {
+      flushParagraph();
+      blocks.push({ type: 'image', alt: image[1], url: image[2] });
+      continue;
+    }
     if (!text || heading || legacyHeadings.has(text)) {
       flushParagraph();
       if (text) blocks.push({ text: heading ? heading[1] : text, type: 'heading' });
@@ -32,7 +38,16 @@ export function parseArticleContent(content = '') {
     }
   }
   flushParagraph();
-  return blocks.map((block, index) => ({ ...block, id: `section-${index}` }));
+
+  // Group consecutive standalone images into one gallery block.
+  const grouped = [];
+  for (const block of blocks) {
+    const prev = grouped[grouped.length - 1];
+    if (block.type === 'image' && prev?.type === 'gallery') prev.images.push(block);
+    else if (block.type === 'image') grouped.push({ type: 'gallery', images: [block] });
+    else grouped.push(block);
+  }
+  return grouped.map((block, index) => ({ ...block, id: `section-${index}` }));
 }
 
 export function parseArticleSteps(value) {

@@ -13,6 +13,8 @@ const sources = [
   'migrations/008_split_story_posts.sql',
   'migrations/009_add_articles.sql',
   'migrations/010_add_threads_contact.sql',
+  'migrations/011_update_article_covers.sql',
+  'migrations/012_add_article_body_images.sql',
 ];
 
 const sql = sources.map((relativePath) => {
