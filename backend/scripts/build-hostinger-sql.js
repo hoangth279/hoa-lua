@@ -11,6 +11,8 @@ const sources = [
   'migrations/005_update_workshops_content.sql',
   'migrations/006_move_public_campaigns_to_db.sql',
   'migrations/008_split_story_posts.sql',
+  'migrations/009_add_articles.sql',
+  'migrations/010_add_threads_contact.sql',
 ];
 
 const sql = sources.map((relativePath) => {

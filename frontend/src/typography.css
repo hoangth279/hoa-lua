@@ -1,0 +1,167 @@
+/* Shared type scale. Keep Vietnamese accents clear and body copy readable. */
+:root {
+  --text-xs: .75rem;
+  --text-sm: .875rem;
+  --text-base: 1rem;
+  --text-lead: clamp(1rem, .95rem + .25vw, 1.125rem);
+  --title-display: clamp(2.5rem, 1.6rem + 4.5vw, 5rem);
+  --title-section: clamp(2rem, 1.5rem + 2.2vw, 3.5rem);
+  --title-card: clamp(1.5rem, 1.3rem + .6vw, 1.875rem);
+  font-size: 100%;
+  line-height: 1.75;
+}
+
+.site-header, main, .site-footer { font-size: var(--text-base); }
+.button { font-size: var(--text-sm); font-weight: 500; line-height: 1.5; }
+.nav a { font-size: var(--text-sm); font-weight: 500; line-height: 1.5; }
+.text-link { font-size: var(--text-sm); font-weight: 500; line-height: 1.6; }
+.eyebrow, .section-index { font-size: var(--text-xs); letter-spacing: .12em; line-height: 1.7; }
+
+/* Color provides the accent; keep highlighted copy upright. */
+.hero h1 em, .page-hero h1 em, .section-heading h2 em,
+.manifesto__statement em, .join h2 em,
+.story-intro__content h1 em, .story-pillars__heading em,
+.admin-login__art h1 em { font-style: normal; }
+
+.hero h1.hero__split-title, .page-hero h1,
+.story-intro__content h1 {
+  font-size: var(--title-display);
+  font-weight: 500;
+  line-height: 1.22;
+  letter-spacing: -.025em;
+}
+.hero h1.hero__split-title { white-space: normal; }
+.hero__split-title > span, .hero__split-title > em { font-size: inherit; white-space: normal; }
+.page-hero__split-title > span, .page-hero__split-title > em { white-space: normal; }
+.hero__lead { font-size: var(--text-lead); line-height: 1.8; }
+.page-hero > .container > .workshop-intro {
+  max-width: 48rem;
+  text-wrap: balance;
+}
+
+/* Fit the two story lines together, including after the web font loads. */
+.story-intro__content { min-width: 0; }
+.story-intro__title > span, .story-intro__title > em {
+  display: block;
+  width: max-content;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+
+.manifesto__statement, .section-heading h2, .join h2,
+.story-block h2, .contact-grid h2, .story-pillars__heading h2,
+.quote-band blockquote {
+  font-size: var(--title-section);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -.02em;
+  text-wrap: balance;
+}
+.manifesto__split-title > span, .manifesto__split-title > em { white-space: normal; }
+.manifesto__copy { max-width: 52rem; text-wrap: pretty; }
+.campaign-detail-list h2, .workshop-list h2, .news-list h2,
+.form-card__intro h2, .story-pillar h3 {
+  font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem);
+  line-height: 1.35;
+  letter-spacing: -.015em;
+}
+.campaign-row h3, .workshop-card h2, .workshop-card h3,
+.post-card h3, .value-grid h3 {
+  font-size: var(--title-card);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -.01em;
+}
+.workshop-card .library-card-title { font-size: 1.5rem; line-height: 1.4; font-weight: 500; }
+.library-card-title > span:not(.sr-only), .workshop-title--split > span {
+  width: auto;
+  white-space: normal;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+.library-card-title > .library-card-title__subtitle {
+  margin-top: 8px;
+  color: var(--muted);
+  font: 400 var(--text-base)/1.6 var(--sans);
+  letter-spacing: 0;
+}
+:is(.workshop-card, .workshop-list__item, .form-card__intro) .workshop-title--split,
+.workshop-title--split > span + span { font-weight: 500; }
+
+.campaign-row p, .workshop-card__body > p:not(.card-meta),
+.post-card > p:last-child,
+.story-pillar p, .article-step p:last-child {
+  font-size: var(--text-base);
+  line-height: 1.8;
+}
+.story-intro__content p:not(.section-index) {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+.campaign-row__number, .card-meta, .workshop-card__image span,
+.hero__caption, .quote-band p, .gallery-item figcaption,
+.contact-grid dt, .field span, .footer__grid h2,
+.article-summary .article-summary__label {
+  font-size: var(--text-xs);
+  line-height: 1.7;
+  letter-spacing: .08em;
+}
+.card-bottom, .workshop-list__item ul, .consent, .form-message,
+.field-error, .site-footer, .article-breadcrumb, .article-toc a,
+.article-toc__toggle, .library-article .article-header .article-meta {
+  font-size: var(--text-sm);
+  line-height: 1.7;
+}
+.field input, .field select, .field textarea { font-size: var(--text-base); line-height: 1.6; }
+.footer__grid .footer__address, .footer__bottom { font-size: var(--text-xs); line-height: 1.8; }
+.footer__grid a, .contact-grid dd { overflow-wrap: anywhere; }
+.social-links { display: flex; flex-wrap: wrap; gap: 12px; }
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--red);
+  text-decoration: none;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.social-links svg { width: 21px; height: 21px; }
+.social-links a:hover { color: var(--paper); background: var(--red); border-color: var(--red); }
+.social-links a:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+.footer__social a { color: var(--paper); border-color: rgba(245,240,230,.3); }
+.footer__social a:focus-visible { outline-color: var(--paper); }
+
+@media (min-width: 901px) {
+  .header__inner { gap: 24px; }
+  .nav { gap: clamp(12px, 1.6vw, 24px); }
+  .nav a, .header__cta { white-space: nowrap; }
+}
+
+.library-page .page-hero h1, .library-article .article-header h1 {
+  font-size: var(--title-section);
+  line-height: 1.35;
+  letter-spacing: -.02em;
+}
+.library-page .page-hero h1 > em { font-size: var(--text-lead); line-height: 1.7; }
+.library-article .article-deck { font-size: var(--text-lead); line-height: 1.8; }
+.library-article .article-body, .library-article .article-step > p { font-size: var(--text-base); line-height: 1.85; }
+.library-article .article-body h2 { font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem); line-height: 1.45; }
+
+@media (min-width: 901px) and (max-width: 1200px) {
+  .header__inner { gap: 16px; }
+  .nav { gap: 14px; }
+  .nav a, .header__cta { font-size: .8125rem; }
+  .header__cta { display: none; }
+}
+@media (max-width: 900px) {
+  .nav a { font: 500 1.25rem/1.5 var(--sans); }
+}
+@media (max-width: 480px) {
+  .hero h1.hero__split-title { font-size: clamp(2rem, 9vw, 2.5rem); }
+  .hero__content { padding-top: 36px; }
+}

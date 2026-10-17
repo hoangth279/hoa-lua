@@ -1,5 +1,7 @@
 # MySQL migrations
 
+Migration `010_add_threads_contact.sql` thêm Threads vào cấu hình mạng xã hội và không ghi đè URL đã chỉnh trong admin. Với database đang chạy, chọn đúng DB và chạy riêng file migration này; không import lại bundle production. API `/api/settings` trả về `threads_url`, có thể sửa tại trang Cấu hình website trong admin.
+
 Chạy từ thư mục gốc dự án:
 
 ```bash

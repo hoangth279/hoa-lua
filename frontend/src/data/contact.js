@@ -6,6 +6,7 @@ export const defaultContactInfo = {
   facebook: 'https://www.facebook.com/profile.php?id=61594504626803',
   tiktok: 'https://www.tiktok.com/@hoaluastory',
   instagram: 'https://www.instagram.com/hoalua.hoaloisong',
+  threads: 'https://www.threads.com/@hoalua.hoaloisong',
 };
 
 export const contactInfoFromSettings = (settings = {}) => {
@@ -20,5 +21,6 @@ export const contactInfoFromSettings = (settings = {}) => {
     facebook: settings.facebook_url?.trim() || defaultContactInfo.facebook,
     tiktok: settings.tiktok_url?.trim() || defaultContactInfo.tiktok,
     instagram: settings.instagram_url?.trim() || defaultContactInfo.instagram,
+    threads: settings.threads_url?.trim() || defaultContactInfo.threads,
   };
 };

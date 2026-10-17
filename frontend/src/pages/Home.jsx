@@ -38,7 +38,7 @@ function Home() {
           <p className="section-index">01 / Về Họa Lụa</p>
           <div>
             <p className="manifesto__statement manifesto__split-title"><span>Không chỉ ngắm nhìn nghệ thuật.</span><em>Hãy để nghệ thuật chạm vào bạn.</em></p>
-            <p className="manifesto__copy">Chúng tôi tin rằng di sản chỉ thực sự sống khi được kể lại bằng ngôn ngữ của hôm nay. Mỗi hoạt động của Họa Lụa là một cuộc gặp giữa nghệ nhân, nghệ sĩ và cộng đồng.</p>
+            <p className="manifesto__copy">Chúng tôi tin rằng di sản chỉ thực sự sống khi được kể lại bằng ngôn ngữ của hôm nay. Mỗi hoạt động của Họa Lụa là một cuộc gặp giữa nghệ nhân, nghệ sĩ và cộng&nbsp;đồng.</p>
             <Link className="text-link" to="/gioi-thieu">Câu chuyện của chúng tôi <span aria-hidden="true">→</span></Link>
           </div>
         </div>

@@ -348,3 +348,8 @@ ON DUPLICATE KEY UPDATE
   display_order = VALUES(display_order),
   is_published = VALUES(is_published),
   published_at = VALUES(published_at);
+
+-- Source: migrations/010_add_threads_contact.sql
+INSERT INTO site_settings (setting_key, setting_value, setting_group) VALUES
+('threads_url', 'https://www.threads.com/@hoalua.hoaloisong', 'social')
+ON DUPLICATE KEY UPDATE setting_key = VALUES(setting_key);

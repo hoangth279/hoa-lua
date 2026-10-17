@@ -9,7 +9,7 @@ const listGallery = asyncHandler(async (_req, res) => { const [rows] = await db.
 const listArticles = asyncHandler(async (_req, res) => { const [rows] = await db.query('SELECT id, slug, title, excerpt, content, steps_json AS stepsJson, cover_image AS coverImage, display_order AS displayOrder, published_at AS publishedAt FROM articles WHERE is_published = 1 ORDER BY display_order, id'); res.json({ success: true, data: rows }); });
 const getArticle = asyncHandler(async (req, res) => { const [rows] = await db.execute('SELECT id, slug, title, excerpt, content, steps_json AS stepsJson, cover_image AS coverImage, display_order AS displayOrder, published_at AS publishedAt FROM articles WHERE slug = ? AND is_published = 1 LIMIT 1', [req.params.slug]); if (!rows[0]) return res.status(404).json({ success: false, message: 'Không tìm thấy bài viết.' }); res.json({ success: true, data: rows[0] }); });
 const getPublicSettings = asyncHandler(async (_req, res) => {
-  const settingKeys = ['contact_email', 'contact_phone', 'contact_address', 'facebook_url', 'tiktok_url', 'instagram_url'];
+  const settingKeys = ['contact_email', 'contact_phone', 'contact_address', 'facebook_url', 'tiktok_url', 'instagram_url', 'threads_url'];
   const [rows] = await db.query('SELECT setting_key AS settingKey, setting_value AS settingValue FROM site_settings WHERE setting_key IN (?)', [settingKeys]);
   const settings = Object.fromEntries(rows.map(({ settingKey, settingValue }) => [settingKey, settingValue || '']));
   res.json({ success: true, data: settings });
