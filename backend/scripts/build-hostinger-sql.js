@@ -15,6 +15,7 @@ const sources = [
   'migrations/010_add_threads_contact.sql',
   'migrations/011_update_article_covers.sql',
   'migrations/012_add_article_body_images.sql',
+  'migrations/013_add_article_focus_keyword.sql',
 ];
 
 const sql = sources.map((relativePath) => {

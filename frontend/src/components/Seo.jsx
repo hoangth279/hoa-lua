@@ -5,7 +5,7 @@ import { SITE_NAME, SITE_URL } from '../lib/seo';
 const DEFAULT_DESCRIPTION = 'Họa Lụa là chiến dịch nghệ thuật phi lợi nhuận kết nối lụa, thủ công và văn hóa Việt với đời sống đương đại.';
 const DEFAULT_IMAGE = `${SITE_URL}/og.png`;
 
-function Seo({ title, description = DEFAULT_DESCRIPTION, image, type = 'website', noIndex = false, publishedAt }) {
+function Seo({ title, description = DEFAULT_DESCRIPTION, image, type = 'website', noIndex = false, publishedAt, keywords }) {
   const { pathname } = useLocation();
   const canonicalUrl = `${SITE_URL}${pathname}`;
   const absoluteImage = image?.startsWith('http') ? image : image ? `${SITE_URL}${image}` : DEFAULT_IMAGE;
@@ -37,6 +37,7 @@ function Seo({ title, description = DEFAULT_DESCRIPTION, image, type = 'website'
     '@id': `${canonicalUrl}#article`,
     headline: title,
     description,
+    ...(keywords ? { keywords } : {}),
     image: absoluteImage,
     datePublished: publishedAt,
     dateModified: publishedAt,
@@ -50,6 +51,7 @@ function Seo({ title, description = DEFAULT_DESCRIPTION, image, type = 'website'
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
+      {keywords && <meta name="keywords" content={keywords} />}
       <link rel="canonical" href={canonicalUrl} />
       <meta name="robots" content={noIndex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
 

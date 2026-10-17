@@ -30,7 +30,7 @@ function ArticleDetail() {
   const hasIntroTitle = blocks[0]?.type === 'paragraph' && /^(Tranh thủ công làm từ lụa:|Quà tặng làm từ lụa:)/.test(blocks[0].text);
 
   return <article className="inner-page library-article">
-    <Seo title={item.title} description={item.excerpt} image={item.coverImage} type="article" publishedAt={item.publishedAt} />
+    <Seo title={item.title} description={item.excerpt} image={item.coverImage} type="article" publishedAt={item.publishedAt} keywords={item.focusKeyword} />
     <header className="article-header">
       <div className="container">
         <nav className="article-breadcrumb" aria-label="Đường dẫn"><Link to="/thu-vien">← Thư viện</Link><span aria-hidden="true">/</span><span>Thông tin hữu ích</span></nav>
