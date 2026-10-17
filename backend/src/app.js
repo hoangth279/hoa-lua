@@ -16,7 +16,18 @@ if (process.env.NODE_ENV === 'production') {
         return res.redirect(301, `https://${req.hostname}${req.originalUrl}`);
     });
 }
-app.use(cors({ credentials: true, origin(origin, callback) { if (!origin || allowedOrigins.includes(origin)) return callback(null, true); const error = new Error('Origin không được phép.'); error.status = 403; return callback(error); } }));
+// Only API requests need the credentialed origin policy. Public frontend assets
+// must remain loadable regardless of the Origin header sent by the browser.
+app.use('/api', cors({
+    credentials: true,
+    origin(origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+        const error = new Error('Origin không được phép.');
+        error.status = 403;
+        error.code = 'CORS_ORIGIN_DENIED';
+        return callback(error);
+    }
+}));
 app.use(express.json({ limit: '100kb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -55,7 +66,8 @@ app.use((req, res) => {
 });
 
 app.use((error, req, res, _next) => {
-    console.error(`[${new Date().toISOString()}] ${req.method} ${req.path}`, error.message);
+    console.error(`[${new Date().toISOString()}] ${req.method} ${req.path}`, error.message,
+        ...(error.code === 'CORS_ORIGIN_DENIED' ? [JSON.stringify({ origin: req.get('Origin') })] : []));
     if (error.code === 'ER_DUP_ENTRY') return res.status(409).json({ success: false, message: 'Slug hoặc email này đã tồn tại.' });
     if (error.code === 'ER_ROW_IS_REFERENCED_2') return res.status(409).json({ success: false, message: 'Không thể xóa vì dữ liệu đang được sử dụng.' });
     res.status(error.status || 500).json({ success: false, message: error.status ? error.message : 'Hệ thống đang bận. Vui lòng thử lại sau.' });
