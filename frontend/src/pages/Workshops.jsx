@@ -18,7 +18,7 @@ function Workshops() {
 
   useEffect(() => {
     if (location.hash === '#booking' && !loading) {
-      document.querySelector('#booking')?.scrollIntoView({ behavior: 'smooth' });
+      document.querySelector('#booking')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     }
   }, [location.hash, loading]);
 

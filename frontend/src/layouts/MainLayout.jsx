@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { ContactInfoProvider, useContactInfo } from '../hooks/useContactInfo';
 import SocialLinks from '../components/SocialLinks';
 import { SITE_URL } from '../lib/seo';
+import { usePageMotion } from '../hooks/usePageMotion';
+import '../motion.css';
 
 const links = [
   ['/', 'Trang chủ'],
@@ -22,6 +24,8 @@ function MainLayout() {
 
 function MainLayoutContent() {
   const [open, setOpen] = useState(false);
+  const mainRef = useRef(null);
+  usePageMotion(mainRef);
   const { contactInfo } = useContactInfo();
 
   useEffect(() => {
@@ -77,7 +81,7 @@ function MainLayoutContent() {
           <Link className="button button--small header__cta" to="/workshop#booking">Tham gia cùng chúng tôi</Link>
         </div>
       </header>
-      <main><Outlet /></main>
+      <main className="site-main" ref={mainRef}><Outlet /></main>
       <footer className="site-footer"><div className="container footer__grid"><div><img src={logo} alt="" /><p>Họa Lụa — nơi nghệ thuật, thủ công và văn hóa Việt gặp gỡ đời sống đương đại.</p></div><div><h2>Khám phá</h2>{links.slice(1).map(([to,label])=><Link key={to} to={to}>{label}</Link>)}</div><div><h2>Kết nối</h2><a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a><a href={`tel:${contactInfo.phoneHref}`}>{contactInfo.phoneDisplay}</a><p className="footer__address">{contactInfo.address}</p><SocialLinks contactInfo={contactInfo} className="footer__social" /></div></div><div className="container footer__bottom"><span>© 2026 Họa Lụa. Một dự án nghệ thuật phi lợi nhuận.</span><Link to="/lien-he">Liên hệ</Link></div></footer>
     </>
   );

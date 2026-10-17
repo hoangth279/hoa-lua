@@ -50,6 +50,7 @@ function BookingForm({ workshop, onSuccess }) {
       <aside className="form-card__intro booking-summary" aria-label="Workshop bạn đã chọn">
         <p className="eyebrow">Trải nghiệm bạn đã chọn</p>
         {workshop.coverImage && <img className="booking-summary__image" src={workshop.coverImage} alt="" loading="lazy" />}
+        <div className="workshop-selection" key={workshop.id}>
         <WorkshopTitle as="h2" title={workshop.title} />
         <dl className="booking-details">
           <div><dt>Ngày diễn ra</dt><dd>{workshop.date}</dd></div>
@@ -57,6 +58,7 @@ function BookingForm({ workshop, onSuccess }) {
           <div><dt>Địa điểm</dt><dd>{workshop.location}</dd></div>
           {workshop.price != null && <div><dt>Phí tham dự</dt><dd>{formatPrice(workshop.price)}{Number(workshop.price) > 0 && <span> / người</span>}</dd></div>}
         </dl>
+        </div>
         <p className="booking-summary__hint">Bạn muốn đổi trải nghiệm? Chọn workshop khác ở danh sách phía trên.</p>
       </aside>
       <form className="booking-form" onSubmit={submit} aria-busy={state.loading}>
@@ -74,7 +76,7 @@ function BookingForm({ workshop, onSuccess }) {
       <label className="consent"><input type="checkbox" required /> <span>Tôi đồng ý để Họa Lụa sử dụng thông tin trên nhằm liên hệ và xác nhận đăng&nbsp;ký.</span></label>
       {state.error && <p className="form-message form-message--error" role="alert">{state.error}</p>}
       {state.success && <p className="form-message form-message--success" role="status">{state.success}</p>}
-      <button className="button booking-form__submit" disabled={state.loading}>{state.loading ? 'Đang gửi đăng ký…' : 'Gửi đăng ký tham dự'}</button>
+      <button className="button booking-form__submit" disabled={state.loading}>{state.loading && <span className="sending-indicator" aria-hidden="true" />}{state.loading ? 'Đang gửi đăng ký…' : 'Gửi đăng ký tham dự'}</button>
       </fieldset>
       </form>
     </div>

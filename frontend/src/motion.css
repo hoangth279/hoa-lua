@@ -1,0 +1,111 @@
+/* Public pages: short, quiet movements with a visible-by-default fallback. */
+@keyframes content-arrive {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes feedback-arrive {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes sending-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__content > .eyebrow,
+  .hero__split-title > *,
+  .hero__lead,
+  .hero__actions {
+    animation: content-arrive 600ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .hero__split-title > :nth-child(1) { animation-delay: 60ms; }
+  .hero__split-title > :nth-child(2) { animation-delay: 130ms; }
+  .hero__split-title > :nth-child(3) { animation-delay: 200ms; }
+  .hero__lead { animation-delay: 240ms; }
+  .hero__actions { animation-delay: 290ms; }
+
+  .story-intro__image,
+  .story-intro__content,
+  .page-hero > .container,
+  .contact-hero__inner > div,
+  .contact-hero__art {
+    animation: content-arrive 600ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .story-intro__content, .contact-hero__art { animation-delay: 100ms; }
+  .contact-hero > .container { animation: none; }
+  /* This frame already has a slight rotation in the page design. */
+  .contact-hero__art { animation-name: contact-art-arrive; }
+  @keyframes contact-art-arrive {
+    from { opacity: 0; transform: translateY(14px) rotate(2deg); }
+    to { opacity: 1; transform: translateY(0) rotate(2deg); }
+  }
+
+  .motion-pending { opacity: 0; transform: translateY(18px); }
+  .motion-visible {
+    animation: content-arrive 550ms cubic-bezier(.22, 1, .36, 1) var(--reveal-delay, 0ms) both;
+  }
+  /* Focus and anchor navigation always expose their destination immediately. */
+  .motion-pending:focus-within, .motion-pending:target {
+    opacity: 1; transform: none;
+  }
+  .motion-visible:focus-within, .motion-visible:target { animation: none; }
+  .workshop-selection { animation: feedback-arrive 250ms ease-out both; }
+  .site-main .form-message { animation: feedback-arrive 220ms ease-out both; }
+  .text-link > span, .card-bottom a > span, .campaign-row__arrow {
+    display: inline-block;
+    transition: transform 200ms ease;
+  }
+  .text-link:is(:hover, :focus-visible) > span,
+  .card-bottom a:is(:hover, :focus-visible) > span { transform: translateX(3px); }
+  .campaign-row:is(:hover, :focus-within) .campaign-row__arrow { transform: translate(2px, -2px); }
+}
+
+.site-main .button:active:not(:disabled) { transform: translateY(0); }
+.site-main .button:disabled { cursor: wait; }
+.sending-indicator {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sending-indicator { animation: sending-spin 800ms linear infinite; }
+}
+
+@media (max-width: 900px) {
+  /* Keep the menu mounted for its exit transition; hidden links cannot be focused. */
+  .site-header .nav {
+    display: flex;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 200ms ease, transform 220ms ease, visibility 220ms;
+  }
+  .site-header .nav--open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .nav-backdrop { animation: feedback-arrive 180ms ease-out both; }
+  }
+  .article-toc__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition: grid-template-rows 220ms ease, visibility 220ms;
+  }
+  .article-toc:not(.article-toc--expanded) ol { display: grid; }
+  .article-toc__panel > div { min-height: 0; overflow: hidden; }
+  .article-toc--expanded .article-toc__panel { grid-template-rows: 1fr; visibility: visible; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .motion-pending { opacity: 1; transform: none; }
+  .site-header .nav { transform: none; transition: none; }
+}

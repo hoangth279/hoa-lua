@@ -5,6 +5,7 @@ import SectionHeading from '../components/SectionHeading';
 import WorkshopTitle from '../components/WorkshopTitle';
 import ArticleTitle from '../components/ArticleTitle';
 import ContentState from '../components/ContentState';
+import HeroSlideshow from '../components/HeroSlideshow';
 import { usePublicContent } from '../hooks/usePublicContent';
 import { useWorkshops } from '../hooks/useWorkshops';
 import { formatApiDate, formatApiTimeRange, formatPrice } from '../data/content';
@@ -20,7 +21,7 @@ function Home() {
     <div className="home-page">
       <Seo description="Họa Lụa là dự án nghệ thuật phi lợi nhuận kết nối lụa, thủ công và văn hóa Việt với đời sống đương đại qua hoạt động cộng đồng và workshop sáng tạo." image={heroArtwork} />
       <section className="hero" aria-labelledby="hero-title">
-        <img className="hero__image" src={heroArtwork} alt="Dải lụa đỏ, khung thêu và dụng cụ nhuộm màu tự nhiên" />
+        <HeroSlideshow />
         <div className="hero__veil" />
         <div className="container hero__content">
           <p className="eyebrow">Chiến dịch nghệ thuật phi lợi nhuận</p>
@@ -31,7 +32,6 @@ function Home() {
             <a className="text-link" href="#story">Đọc câu chuyện <span aria-hidden="true">↓</span></a>
           </div>
         </div>
-        <p className="hero__caption">01 — Lụa và sắc màu tự nhiên</p>
       </section>
       <section className="manifesto" id="story">
         <div className="container manifesto__grid">
