@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
 import MainLayout from './layouts/MainLayout';
 import ScrollToTop from './components/ScrollToTop';
@@ -26,23 +26,23 @@ function App() {
     return (
         <BrowserRouter>
           <ScrollToTop />
-          <AdminAuthProvider>
-            <Routes>
-                <Route element={<MainLayout />}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/gioi-thieu" element={<About />} />
-                    <Route path="/hoat-dong" element={<Activities />} />
-                    <Route path="/workshop" element={<Workshops />} />
-                    <Route path="/ve-chung-toi" element={<AboutUs />} />
-                    <Route path="/thu-vien" element={<Gallery />} />
-                    <Route path="/thu-vien/:slug" element={<ArticleDetail />} />
-                    <Route path="/lien-he" element={<Contact />} />
-                    <Route path="/bai-viet" element={<Navigate to="/gioi-thieu" replace />} />
-                    <Route path="/bai-viet/:slug" element={<Navigate to="/gioi-thieu" replace />} />
-                    <Route path="*" element={<NotFound />} />
-                </Route>
-                <Route path="/admin/dang-nhap" element={<AdminLogin />} />
-                <Route path="/admin" element={<AdminGuard />}>
+          <Routes>
+              <Route element={<MainLayout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/gioi-thieu" element={<About />} />
+                  <Route path="/hoat-dong" element={<Activities />} />
+                  <Route path="/workshop" element={<Workshops />} />
+                  <Route path="/ve-chung-toi" element={<AboutUs />} />
+                  <Route path="/thu-vien" element={<Gallery />} />
+                  <Route path="/thu-vien/:slug" element={<ArticleDetail />} />
+                  <Route path="/lien-he" element={<Contact />} />
+                  <Route path="/bai-viet" element={<Navigate to="/gioi-thieu" replace />} />
+                  <Route path="/bai-viet/:slug" element={<Navigate to="/gioi-thieu" replace />} />
+                  <Route path="*" element={<NotFound />} />
+              </Route>
+              <Route path="/admin" element={<AdminAuthProvider><Outlet /></AdminAuthProvider>}>
+                <Route path="dang-nhap" element={<AdminLogin />} />
+                <Route element={<AdminGuard />}>
                   <Route element={<AdminLayout />}>
                     <Route index element={<AdminDashboard />} />
                     <Route path="bookings" element={<AdminBookings />} />
@@ -56,8 +56,8 @@ function App() {
                     <Route path="cau-hinh" element={<AdminSettings />} />
                   </Route>
                 </Route>
-            </Routes>
-          </AdminAuthProvider>
+              </Route>
+          </Routes>
         </BrowserRouter>
     );
 }
