@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom
 
 import MainLayout from './layouts/MainLayout';
 import ScrollToTop from './components/ScrollToTop';
+import Analytics from './components/Analytics';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
@@ -26,6 +27,7 @@ function App() {
     return (
         <BrowserRouter>
           <ScrollToTop />
+          <Analytics />
           <Routes>
               <Route element={<MainLayout />}>
                   <Route path="/" element={<Home />} />

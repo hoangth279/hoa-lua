@@ -8,6 +8,7 @@ import ContentState from '../components/ContentState';
 import HeroSlideshow from '../components/HeroSlideshow';
 import { usePublicContent } from '../hooks/usePublicContent';
 import { useWorkshops } from '../hooks/useWorkshops';
+import { trackEvent } from '../lib/analytics';
 import { formatApiDate, formatApiTimeRange, formatPrice } from '../data/content';
 
 function Home() {
@@ -80,7 +81,7 @@ function Home() {
         </div>
       </section>
       <section className="quote-band"><div className="container"><span>“</span><blockquote><span className="quote-band__line">Nghệ thuật không ở đâu xa.</span><span className="quote-band__line">Nghệ thuật đơm hoa từ những điều bình dị.</span></blockquote><p>— Tuyên ngôn Họa Lụa</p></div></section>
-      <section className="join"><div className="container join__inner"><p className="section-index">Cùng Họa Lụa tạo nên điều đẹp đẽ</p><h2 className="join__split-title"><span>Mỗi bàn tay góp vào,</span><em>một câu chuyện được nối dài.</em></h2><p>Bạn có thể tham dự workshop, trở thành tình nguyện viên, đồng hành chuyên môn hoặc đơn giản là kể câu chuyện Họa Lụa cho một người bạn.</p><Link className="button button--light" to="/workshop#booking">Tham gia cùng chúng tôi →</Link></div></section>
+      <section className="join"><div className="container join__inner"><p className="section-index">Cùng Họa Lụa tạo nên điều đẹp đẽ</p><h2 className="join__split-title"><span>Mỗi bàn tay góp vào,</span><em>một câu chuyện được nối dài.</em></h2><p>Bạn có thể tham dự workshop, trở thành tình nguyện viên, đồng hành chuyên môn hoặc đơn giản là kể câu chuyện Họa Lụa cho một người bạn.</p><Link className="button button--light" to="/workshop#booking" onClick={() => trackEvent('cta_click', { cta_location: 'home_join' })}>Tham gia cùng chúng tôi →</Link></div></section>
     </div>
   );
 }

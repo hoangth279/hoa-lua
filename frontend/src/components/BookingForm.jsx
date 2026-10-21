@@ -3,6 +3,7 @@ import api from '../api/axios';
 import WorkshopTitle from './WorkshopTitle';
 import { validateBookingContact, vnPhoneRegex } from '../utils/bookingValidation';
 import { formatPrice } from '../data/content';
+import { trackEvent } from '../lib/analytics';
 import './booking-form.css';
 
 const initial = { fullName: '', email: '', phone: '', participants: 1, note: '' };
@@ -39,6 +40,7 @@ function BookingForm({ workshop, onSuccess }) {
       setState({ loading: false, error: '', success: data.message || 'Đăng ký thành công. Họa Lụa sẽ sớm liên hệ xác nhận!' });
       setForm(initial);
       setFieldErrors({});
+      trackEvent('generate_lead', { method: 'workshop_booking', workshop_id: workshop.id });
       onSuccess?.(data);
     } catch (error) {
       setFieldErrors(error.response?.data?.errors || {});
@@ -76,7 +78,7 @@ function BookingForm({ workshop, onSuccess }) {
       <label className="consent"><input type="checkbox" required /> <span>Tôi đồng ý để Họa Lụa sử dụng thông tin trên nhằm liên hệ và xác nhận đăng&nbsp;ký.</span></label>
       {state.error && <p className="form-message form-message--error" role="alert">{state.error}</p>}
       {state.success && <p className="form-message form-message--success" role="status">{state.success}</p>}
-      <button className="button booking-form__submit" disabled={state.loading}>{state.loading && <span className="sending-indicator" aria-hidden="true" />}{state.loading ? 'Đang gửi đăng ký…' : 'Gửi đăng ký tham dự'}</button>
+      <button className="button booking-form__submit" disabled={state.loading} onClick={() => trackEvent('workshop_registration_click', { workshop_id: workshop.id })}>{state.loading && <span className="sending-indicator" aria-hidden="true" />}{state.loading ? 'Đang gửi đăng ký…' : 'Gửi đăng ký tham dự'}</button>
       </fieldset>
       </form>
     </div>

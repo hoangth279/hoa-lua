@@ -1,3 +1,5 @@
+import { trackEvent } from '../lib/analytics';
+
 const channels = [
   { key: 'facebook', label: 'Facebook', icon: <path fill="currentColor" d="M13.5 22v-9.1h3.1l.5-3.6h-3.6V7c0-1 .3-1.7 1.8-1.7h1.9V2.1A24 24 0 0 0 14.4 2c-2.8 0-4.7 1.7-4.7 4.8v2.5H6.5v3.6h3.2V22z" /> },
   { key: 'tiktok', label: 'TikTok', icon: <path fill="currentColor" d="M16.7 2h-3.5v13.6a3 3 0 1 1-2.6-3V9.1a6.5 6.5 0 1 0 6.1 6.5V8.7A8.5 8.5 0 0 0 22 10V6.5A5.4 5.4 0 0 1 16.7 2z" /> },
@@ -8,7 +10,7 @@ const channels = [
 export default function SocialLinks({ contactInfo, className = '' }) {
   return <div className={`social-links ${className}`}>
     {channels.filter(({ key }) => contactInfo[key]).map(({ key, label, icon }) => (
-      <a key={key} href={contactInfo[key]} target="_blank" rel="noopener noreferrer" aria-label={label} title={label}>
+      <a key={key} href={contactInfo[key]} target="_blank" rel="noopener noreferrer" aria-label={label} title={label} onClick={() => trackEvent('social_click', { platform: key })}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{icon}</svg>
       </a>
     ))}

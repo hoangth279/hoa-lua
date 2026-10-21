@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import api from '../api/axios';
+import { trackEvent } from '../lib/analytics';
 
 function ContactForm() {
   const [form, setForm] = useState({ fullName: '', email: '', subject: '', message: '' });
@@ -7,7 +8,7 @@ function ContactForm() {
   const update = (event) => setForm({ ...form, [event.target.name]: event.target.value });
   const submit = async (event) => {
     event.preventDefault(); setState({ loading: true, message: '', error: false });
-    try { const { data } = await api.post('/contacts', form); setState({ loading: false, message: data.message, error: false }); setForm({ fullName: '', email: '', subject: '', message: '' }); }
+    try { const { data } = await api.post('/contacts', form); setState({ loading: false, message: data.message, error: false }); setForm({ fullName: '', email: '', subject: '', message: '' }); trackEvent('generate_lead', { method: 'contact_form' }); }
     catch (error) { setState({ loading: false, message: error.response?.data?.message || 'Chưa thể gửi lời nhắn. Vui lòng thử lại.', error: true }); }
   };
   return <form className="contact-form" onSubmit={submit} aria-busy={state.loading}>
